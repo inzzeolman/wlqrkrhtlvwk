@@ -1,0 +1,3368 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atelier Launch — 제품 런칭 전략 스튜디오</title>
+    <meta
+      name="description"
+      content="제품 예시 사진이나 도면, 타깃층과 분위기를 입력하면 브랜드 슬로건, 인스타그램 광고 크리에이티브, 채널별 광고 문구, 가격 추천까지 한 번에 설계하는 단일 파일 런칭 전략 스튜디오"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-canvas: #f7f8fa;
+        --bg-surface: #ffffff;
+        --bg-subtle: #f1f5f9;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --border-hairline: #e2e8f0;
+        --border-strong: #cbd5e1;
+        --accent: #1d4ed8;
+        --accent-hover: #1e40af;
+        --accent-soft: rgba(29, 78, 216, 0.08);
+        --success: #047857;
+        --warning: #b45309;
+        --danger: #b91c1c;
+        --font-sans: 'Plus Jakarta Sans', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: var(--font-sans);
+        scroll-behavior: smooth;
+        background: var(--bg-canvas);
+        color: var(--text-primary);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-canvas);
+        color: var(--text-primary);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+      }
+
+      button,
+      input,
+      textarea {
+        font-family: inherit;
+      }
+
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .font-mono {
+        font-family: var(--font-mono);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      /* Top Bar (3-zone contract) */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .topbar-inner {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+      }
+
+      .brand-wordmark {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .nav-links {
+        display: none;
+        align-items: center;
+        gap: 28px;
+      }
+
+      @media (min-width: 768px) {
+        .nav-links {
+          display: flex;
+        }
+      }
+
+      .nav-links a {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: color 150ms ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--text-primary);
+        text-decoration: underline;
+        text-underline-offset: 6px;
+      }
+
+      .btn-header {
+        padding: 8px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+        background: var(--text-primary);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background-color 150ms ease;
+      }
+
+      .btn-header:hover {
+        background: #1e293b;
+      }
+
+      /* Main Grid Layout */
+      .main-container {
+        flex: 1;
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 32px 24px;
+      }
+
+      .workspace-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        align-items: start;
+      }
+
+      @media (min-width: 1024px) {
+        .workspace-grid {
+          grid-template-columns: 420px minmax(0, 1fr);
+        }
+        .brief-column {
+          position: sticky;
+          top: 80px;
+        }
+      }
+
+      /* Cards & Surfaces (Single-elevation) */
+      .card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-hairline);
+        border-radius: 12px;
+        padding: 24px;
+      }
+
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .section-kicker {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+
+      .section-title {
+        margin: 2px 0 0;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        color: var(--text-primary);
+      }
+
+      /* Form Elements */
+      .form-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .brief-title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .brief-desc {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .field-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .field-optional {
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--text-muted);
+      }
+
+      .required-mark {
+        color: var(--accent);
+      }
+
+      .input,
+      .textarea {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+        color: var(--text-primary);
+        background: var(--bg-surface);
+        border: 1px solid var(--border-hairline);
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+      }
+
+      .input:focus,
+      .textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+      }
+
+      .textarea {
+        resize: vertical;
+        min-height: 104px;
+        line-height: 1.6;
+      }
+
+      /* Segmented Control */
+      .segmented {
+        display: inline-flex;
+        padding: 2px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-hairline);
+        border-radius: 8px;
+      }
+
+      .seg-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: transparent;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background-color 150ms ease, color 150ms ease;
+      }
+
+      .seg-btn.active {
+        background: #ffffff;
+        color: var(--text-primary);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      /* Sample & Preset Buttons */
+      .sample-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      @media (min-width: 520px) {
+        .sample-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .btn-sample {
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: #f8fafc;
+        border: 1px solid var(--border-hairline);
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+      }
+
+      .btn-sample:hover {
+        background: var(--bg-subtle);
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+      }
+
+      .preset-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .preset-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: #f8fafc;
+        border: 1px solid var(--border-hairline);
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: all 150ms ease;
+      }
+
+      .preset-btn:hover {
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+      }
+
+      .preset-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
+
+      /* Dropzone */
+      .dropzone {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 20px;
+        border: 1px dashed var(--border-strong);
+        border-radius: 12px;
+        background: #f8fafc;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 150ms ease, background-color 150ms ease;
+      }
+
+      .dropzone:hover,
+      .dropzone.dragging {
+        border-color: var(--accent);
+        background: rgba(29, 78, 216, 0.04);
+      }
+
+      .dropzone-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--border-hairline);
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        color: var(--text-secondary);
+      }
+
+      .dropzone-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .dropzone-sub {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .preview-box {
+        border: 1px solid var(--border-hairline);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .preview-box img {
+        display: block;
+        width: 100%;
+        height: 220px;
+        object-fit: contain;
+        background: #ffffff;
+      }
+
+      .preview-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-top: 1px solid var(--border-hairline);
+        background: #f8fafc;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .preview-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-mini {
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-primary);
+        background: #ffffff;
+        border: 1px solid var(--border-hairline);
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .btn-mini:hover {
+        border-color: var(--border-strong);
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 13px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        background: var(--accent);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color 150ms ease;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--accent-hover);
+      }
+
+      .btn-primary:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+      }
+
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+        background: #f8fafc;
+        border: 1px solid var(--border-hairline);
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .btn-secondary:hover {
+        background: var(--bg-subtle);
+      }
+
+      .btn-copy {
+        background: transparent;
+        border: none;
+        padding: 2px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--accent);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .btn-copy:hover {
+        color: var(--accent-hover);
+      }
+
+      /* Empty State Welcome */
+      .welcome-card {
+        padding: 36px;
+      }
+
+      .welcome-headline {
+        margin: 8px 0 10px;
+        font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+        text-wrap: balance;
+        max-width: 640px;
+      }
+
+      .welcome-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-hairline);
+      }
+
+      @media (min-width: 640px) {
+        .welcome-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .feature-cell {
+        border: 1px solid var(--border-hairline);
+        border-radius: 10px;
+        padding: 20px;
+      }
+
+      .feature-num {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .feature-title {
+        margin: 6px 0;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .feature-body {
+        margin: 0;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      /* Results Stack */
+      .results-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .summary-strip {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .meta-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .main-slogan-box {
+        background: #f8fafc;
+        border: 1px solid var(--border-hairline);
+        border-radius: 10px;
+        padding: 24px;
+        margin-top: 20px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .main-slogan-text {
+        margin: 8px 0;
+        font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.35;
+        text-wrap: balance;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      @media (min-width: 768px) {
+        .two-col {
+          grid-template-columns: 5fr 7fr;
+        }
+      }
+
+      .insight-list {
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .insight-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .variations-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 12px;
+      }
+
+      @media (min-width: 768px) {
+        .variations-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .sub-card {
+        border: 1px solid var(--border-hairline);
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      /* Instagram Studio */
+      .ig-studio-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-top: 24px;
+        align-items: start;
+      }
+
+      @media (min-width: 1120px) {
+        .ig-studio-grid {
+          grid-template-columns: 360px minmax(0, 1fr);
+        }
+      }
+
+      .ig-phone-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .ig-card-shell {
+        width: 100%;
+        max-width: 340px;
+        border: 1px solid var(--border-hairline);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .ig-mock-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .ig-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        flex-shrink: 0;
+      }
+
+      .ig-canvas-preview {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        transition: background-color 150ms ease, color 150ms ease;
+      }
+
+      .ig-canvas-preview.feed {
+        aspect-ratio: 4 / 5;
+      }
+
+      .ig-canvas-preview.story {
+        aspect-ratio: 9 / 16;
+      }
+
+      .ig-image-frame {
+        flex: 1;
+        min-height: 0;
+        margin: 12px 0;
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(148, 163, 184, 0.16);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ig-image-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .ig-cta-badge {
+        display: inline-block;
+        padding: 7px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+        border-radius: 6px;
+      }
+
+      .ig-mock-footer {
+        padding: 10px 14px;
+        border-top: 1px solid #f1f5f9;
+        background: #ffffff;
+      }
+
+      .ig-caption-box {
+        background: #f8fafc;
+        border: 1px solid var(--border-hairline);
+        border-radius: 8px;
+        padding: 14px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        white-space: pre-line;
+        line-height: 1.65;
+        margin: 8px 0 0;
+      }
+
+      .edit-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      @media (min-width: 640px) {
+        .edit-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Copy & Tables */
+      .three-col {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      @media (min-width: 768px) {
+        .three-col {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .table-wrap {
+        border: 1px solid var(--border-hairline);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 16px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th {
+        background: #f8fafc;
+        border-bottom: 1px solid var(--border-hairline);
+        padding: 10px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border-hairline);
+        vertical-align: top;
+        font-size: 13px;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .tier-row {
+        cursor: pointer;
+        transition: background-color 150ms ease;
+      }
+
+      .tier-row:hover {
+        background: #f8fafc;
+      }
+
+      .tier-row.selected {
+        background: var(--accent-soft);
+      }
+
+      /* Pricing & Simulator */
+      .pricing-top-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        margin-top: 24px;
+      }
+
+      @media (min-width: 900px) {
+        .pricing-top-grid {
+          grid-template-columns: 5fr 7fr;
+        }
+      }
+
+      .price-big {
+        margin: 4px 0 0;
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+      }
+
+      .range-track {
+        position: relative;
+        height: 8px;
+        background: var(--bg-subtle);
+        border-radius: 999px;
+        margin: 14px 0 6px;
+      }
+
+      .range-fill {
+        position: absolute;
+        inset: 0;
+        background: rgba(29, 78, 216, 0.2);
+        border-radius: 999px;
+      }
+
+      .range-marker {
+        position: absolute;
+        top: -2px;
+        bottom: -2px;
+        width: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        transform: translateX(-50%);
+      }
+
+      .sim-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      @media (min-width: 768px) {
+        .sim-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 16px;
+      }
+
+      @media (min-width: 640px) {
+        .kpi-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .kpi-box {
+        border: 1px solid var(--border-hairline);
+        border-radius: 10px;
+        padding: 16px;
+        background: #f8fafc;
+      }
+
+      .kpi-value {
+        margin: 6px 0 0;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      /* Drawer */
+      .drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(15, 23, 42, 0.36);
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .drawer-panel {
+        width: 100%;
+        max-width: 420px;
+        height: 100%;
+        background: #ffffff;
+        border-left: 1px solid var(--border-hairline);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* Alert & Skeleton */
+      .alert-error {
+        background: #ffffff;
+        border: 1px solid #fecaca;
+        border-radius: 12px;
+        padding: 18px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .skeleton {
+        background: #e2e8f0;
+        border-radius: 8px;
+        animation: pulse 1.4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      /* Footer */
+      .footer {
+        border-top: 1px solid var(--border-hairline);
+        background: #ffffff;
+        margin-top: 48px;
+      }
+
+      .footer-inner {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .footer-link {
+        color: var(--text-primary);
+        font-weight: 500;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 12px;
+      }
+
+      .footer-link:hover {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="#brief-section" id="brand-reset-link" class="brand-wordmark">
+          Atelier Launch
+        </a>
+        <nav class="nav-links" aria-label="섹션 이동">
+          <a href="#brief-section">제품 브리프</a>
+          <a href="#slogan-section" data-result-nav="true">슬로건</a>
+          <a href="#instagram-section" data-result-nav="true">인스타 광고</a>
+          <a href="#copy-section" data-result-nav="true">광고 문구</a>
+          <a href="#pricing-section" data-result-nav="true">가격 추천</a>
+        </nav>
+        <button type="button" id="open-history-btn" class="btn-header">
+          저장 기록
+        </button>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <div class="workspace-grid">
+        <!-- Left Input Column -->
+        <aside class="brief-column">
+          <section id="brief-section" class="card form-stack">
+            <div>
+              <h1 class="brief-title">제품 브리프 입력</h1>
+              <p class="brief-desc">
+                제작할 제품 사진이나 도면을 넣고 타깃층과 분위기를 입력하면 런칭 전략을 즉시 설계합니다.
+              </p>
+            </div>
+
+            <div class="field-group">
+              <span class="field-optional">빠른 테스트용 예시 불러오기</span>
+              <div class="sample-grid">
+                <button type="button" id="sample-blueprint-btn" class="btn-sample">
+                  도면 예시 · 데스크 오거나이저
+                </button>
+                <button type="button" id="sample-photo-btn" class="btn-sample">
+                  실물 예시 · 세라믹 커피 드리퍼
+                </button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-header">
+                <label class="field-label">제품 사진 또는 도면</label>
+                <div class="segmented" role="group" aria-label="이미지 유형">
+                  <button type="button" id="kind-photo-btn" class="seg-btn active">
+                    예시 사진
+                  </button>
+                  <button type="button" id="kind-blueprint-btn" class="seg-btn">
+                    도면 · 스케치
+                  </button>
+                </div>
+              </div>
+
+              <input
+                type="file"
+                id="file-input"
+                accept="image/png,image/jpeg,image/webp"
+                class="hidden"
+              />
+
+              <div id="dropzone" class="dropzone" tabindex="0" role="button">
+                <div class="dropzone-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </div>
+                <p class="dropzone-title">사진 또는 도면 이미지를 드래그하거나 클릭해 첨부</p>
+                <p class="dropzone-sub">PNG, JPG, WebP (최대 10MB) · 클립보드 Ctrl+V 지원</p>
+              </div>
+
+              <div id="preview-box" class="preview-box hidden">
+                <img id="preview-img" alt="업로드된 제품 이미지 미리보기" />
+                <div class="preview-bar">
+                  <span id="preview-kind-label">제품 실물 사진 모드로 분석</span>
+                  <div class="preview-actions">
+                    <button type="button" id="replace-img-btn" class="btn-mini">교체</button>
+                    <button type="button" id="remove-img-btn" class="btn-mini">삭제</button>
+                  </div>
+                </div>
+              </div>
+
+              <p id="file-error" class="hidden" style="margin:0;font-size:12px;color:#b91c1c;" role="alert"></p>
+            </div>
+
+            <div class="field-group">
+              <label for="product-name" class="field-label">
+                제품명 또는 가칭 <span class="field-optional">(선택)</span>
+              </label>
+              <input
+                id="product-name"
+                type="text"
+                class="input"
+                placeholder="예: 모듈형 월넛 데스크 트레이, 릿지 드리퍼"
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="product-description" class="field-label">
+                세부 제품 설명 <span class="required-mark">*</span>
+              </label>
+              <textarea
+                id="product-description"
+                class="textarea"
+                placeholder="소재, 크기/스펙, 핵심 기능, 기존 제품과의 차별점을 자세히 적어주세요."
+              ></textarea>
+            </div>
+
+            <div class="field-group">
+              <label for="target-audience" class="field-label">
+                타깃층 <span class="required-mark">*</span>
+              </label>
+              <input
+                id="target-audience"
+                type="text"
+                class="input"
+                placeholder="예: 홈오피스를 꾸미는 30대 직장인, 1인 가구"
+              />
+              <div id="target-presets" class="preset-wrap"></div>
+            </div>
+
+            <div class="field-group">
+              <label for="brand-mood" class="field-label">
+                브랜드 분위기 / 무드 <span class="required-mark">*</span>
+              </label>
+              <input
+                id="brand-mood"
+                type="text"
+                class="input"
+                placeholder="예: 미니멀하고 건축적인, 따뜻하고 감성적인"
+              />
+              <div id="mood-presets" class="preset-wrap"></div>
+            </div>
+
+            <div class="field-group">
+              <label for="estimated-cost" class="field-label">
+                예상 개당 제작 원가 (원)
+                <span class="field-optional">(선택 · 마진 시뮬레이터 반영)</span>
+              </label>
+              <input
+                id="estimated-cost"
+                type="number"
+                min="0"
+                step="100"
+                class="input font-mono tabular-nums"
+                placeholder="예: 15000"
+              />
+            </div>
+
+            <button type="button" id="submit-btn" class="btn-primary" disabled>
+              브랜드 런칭 전략 생성하기
+            </button>
+          </section>
+        </aside>
+
+        <!-- Right Output Workspace -->
+        <div id="workspace-right">
+          <div id="error-banner" class="alert-error hidden" role="alert">
+            <div>
+              <p style="margin:0;font-size:14px;font-weight:600;color:#b91c1c;">
+                전략 생성을 완료하지 못했습니다
+              </p>
+              <p id="error-text" style="margin:4px 0 0;font-size:12px;color:#475569;"></p>
+            </div>
+            <button type="button" id="retry-btn" class="btn-header">다시 시도</button>
+          </div>
+
+          <div id="loading-panel" class="results-stack hidden" aria-busy="true">
+            <div class="card">
+              <div class="skeleton" style="height:14px;width:180px;"></div>
+              <div class="skeleton" style="height:28px;width:68%;margin-top:14px;"></div>
+              <div class="skeleton" style="height:14px;width:45%;margin-top:12px;"></div>
+            </div>
+            <div class="card">
+              <div class="skeleton" style="height:20px;width:210px;"></div>
+              <div class="skeleton" style="height:220px;width:100%;margin-top:18px;"></div>
+            </div>
+          </div>
+
+          <div id="welcome-panel" class="card welcome-card">
+            <span class="section-kicker" style="color:var(--accent);">
+              Product Launch Blueprint
+            </span>
+            <h2 class="welcome-headline">
+              도면 한 장과 짧은 제품 설명으로 완성하는 브랜드 런칭 패키지
+            </h2>
+            <p class="brief-desc" style="max-width:640px;">
+              왼쪽 패널에 제작할 제품의 사진이나 설계 도면을 올리고 타깃층과 분위기를 입력해 보세요. 브라우저에서 즉시 실행되며 아래 4가지 런칭 결과물을 한 번에 설계합니다.
+            </p>
+            <div class="welcome-grid">
+              <div class="feature-cell">
+                <span class="feature-num">01</span>
+                <h3 class="feature-title">슬로건 & 브랜드 포지셔닝</h3>
+                <p class="feature-body">
+                  도면·사진과 제품 스펙에서 읽어낸 강점을 바탕으로 대표 슬로건과 4가지 톤별 변주 카피를 제안합니다.
+                </p>
+              </div>
+              <div class="feature-cell">
+                <span class="feature-num">02</span>
+                <h3 class="feature-title">인스타그램 광고 목업 & PNG 저장</h3>
+                <p class="feature-body">
+                  업로드한 이미지로 피드(4:5)·스토리(9:16) 광고 시안을 만들고 문구를 수정해 고해상도 PNG로 저장합니다.
+                </p>
+              </div>
+              <div class="feature-cell">
+                <span class="feature-num">03</span>
+                <h3 class="feature-title">채널별 광고 문구 & 숏폼 대본</h3>
+                <p class="feature-body">
+                  메타·네이버·카카오 퍼포먼스 카피부터 상세페이지 상단 구조, 15초 릴스 대본까지 한 번에 작성합니다.
+                </p>
+              </div>
+              <div class="feature-cell">
+                <span class="feature-num">04</span>
+                <h3 class="feature-title">가격 추천 & 원가 마진 시뮬레이터</h3>
+                <p class="feature-body">
+                  타깃 지불 의향을 고려한 3단계 가격 전략과 원가·수수료 기반 실시간 순수익·손익분기점 계산을 제공합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="results-panel" class="results-stack hidden"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>Atelier Launch · Standalone Launch Studio</span>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <span>단일 HTML 파일 · 서버/빌드 없이 브라우저 즉시 실행</span>
+          <span aria-hidden="true">·</span>
+          <button type="button" id="download-self-html-btn" class="footer-link">
+            현재 index.html 저장
+          </button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- History Drawer -->
+    <div id="history-drawer" class="drawer-backdrop hidden">
+      <div class="drawer-panel" role="dialog" aria-label="저장된 런칭 전략 기록">
+        <div class="drawer-header">
+          <h2 style="margin:0;font-size:16px;font-weight:700;">저장된 런칭 전략</h2>
+          <button type="button" id="close-history-btn" class="btn-mini">닫기</button>
+        </div>
+        <div id="history-list" class="drawer-body"></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        var STORAGE_KEY = 'atelier_launch_standalone_v1';
+        var TARGET_PRESETS = [
+          '2030 1인 가구 · 자취생',
+          '3040 직장인 · 홈오피스',
+          '감도 높은 20대 여성',
+          '미니멀 라이프 추구층',
+          '프리미엄 기프트 구매층',
+          '취미 · 스페셜티 애호가',
+        ];
+        var MOOD_PRESETS = [
+          '미니멀 · 모던',
+          '따뜻한 내추럴 감성',
+          '하이엔드 · 건축적',
+          '위트 · 트렌디',
+          '테크 · 인더스트리얼',
+          '친환경 · 지속가능',
+        ];
+
+        var state = {
+          productName: '',
+          imageKind: 'photo',
+          imagePreviewUrl: null,
+          imageBase64: null,
+          imageMimeType: null,
+          description: '',
+          targetAudience: '',
+          mood: '',
+          estimatedCostKrw: '',
+          result: null,
+          savedRecords: loadSavedRecords(),
+          igFormat: 'feed',
+          igTheme: 'light',
+          igHandle: 'atelier_official',
+          igHeadline: '',
+          igSubcopy: '',
+          igCta: '',
+          copyTab: 'performance',
+          simPrice: 0,
+          simCost: 0,
+          simFee: 12,
+          simFixed: 1500000,
+        };
+
+        var els = {
+          productName: document.getElementById('product-name'),
+          description: document.getElementById('product-description'),
+          targetAudience: document.getElementById('target-audience'),
+          mood: document.getElementById('brand-mood'),
+          estimatedCost: document.getElementById('estimated-cost'),
+          submitBtn: document.getElementById('submit-btn'),
+          fileInput: document.getElementById('file-input'),
+          dropzone: document.getElementById('dropzone'),
+          previewBox: document.getElementById('preview-box'),
+          previewImg: document.getElementById('preview-img'),
+          previewKindLabel: document.getElementById('preview-kind-label'),
+          replaceImgBtn: document.getElementById('replace-img-btn'),
+          removeImgBtn: document.getElementById('remove-img-btn'),
+          fileError: document.getElementById('file-error'),
+          kindPhotoBtn: document.getElementById('kind-photo-btn'),
+          kindBlueprintBtn: document.getElementById('kind-blueprint-btn'),
+          sampleBlueprintBtn: document.getElementById('sample-blueprint-btn'),
+          samplePhotoBtn: document.getElementById('sample-photo-btn'),
+          targetPresets: document.getElementById('target-presets'),
+          moodPresets: document.getElementById('mood-presets'),
+          errorBanner: document.getElementById('error-banner'),
+          errorText: document.getElementById('error-text'),
+          retryBtn: document.getElementById('retry-btn'),
+          loadingPanel: document.getElementById('loading-panel'),
+          welcomePanel: document.getElementById('welcome-panel'),
+          resultsPanel: document.getElementById('results-panel'),
+          openHistoryBtn: document.getElementById('open-history-btn'),
+          closeHistoryBtn: document.getElementById('close-history-btn'),
+          historyDrawer: document.getElementById('history-drawer'),
+          historyList: document.getElementById('history-list'),
+          brandResetLink: document.getElementById('brand-reset-link'),
+          downloadSelfHtmlBtn: document.getElementById('download-self-html-btn'),
+        };
+
+        function loadSavedRecords() {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+          } catch (e) {
+            return [];
+          }
+        }
+
+        function persistSavedRecords() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state.savedRecords));
+          } catch (e) {
+            // Ignore localStorage quota error
+          }
+          updateHistoryButtonLabel();
+        }
+
+        function updateHistoryButtonLabel() {
+          els.openHistoryBtn.textContent =
+            state.savedRecords.length > 0
+              ? '저장 기록 (' + state.savedRecords.length + ')'
+              : '저장 기록';
+        }
+
+        function escapeHtml(str) {
+          return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
+        function formatKrw(num) {
+          return Math.round(Number(num) || 0).toLocaleString('ko-KR') + '원';
+        }
+
+        function renderPresetButtons() {
+          els.targetPresets.innerHTML = TARGET_PRESETS.map(function (label) {
+            var active = state.targetAudience.indexOf(label) !== -1;
+            return (
+              '<button type="button" class="preset-btn' +
+              (active ? ' active' : '') +
+              '" data-preset-target="' +
+              escapeHtml(label) +
+              '">' +
+              escapeHtml(label) +
+              '</button>'
+            );
+          }).join('');
+
+          els.moodPresets.innerHTML = MOOD_PRESETS.map(function (label) {
+            var active = state.mood.indexOf(label) !== -1;
+            return (
+              '<button type="button" class="preset-btn' +
+              (active ? ' active' : '') +
+              '" data-preset-mood="' +
+              escapeHtml(label) +
+              '">' +
+              escapeHtml(label) +
+              '</button>'
+            );
+          }).join('');
+        }
+
+        function syncFormFromState() {
+          els.productName.value = state.productName;
+          els.description.value = state.description;
+          els.targetAudience.value = state.targetAudience;
+          els.mood.value = state.mood;
+          els.estimatedCost.value = state.estimatedCostKrw;
+
+          els.kindPhotoBtn.classList.toggle('active', state.imageKind === 'photo');
+          els.kindBlueprintBtn.classList.toggle('active', state.imageKind === 'blueprint');
+          els.previewKindLabel.textContent =
+            state.imageKind === 'blueprint'
+              ? '도면 · 스케치 모드로 분석'
+              : '제품 실물 사진 모드로 분석';
+
+          if (state.imagePreviewUrl) {
+            els.previewImg.src = state.imagePreviewUrl;
+            els.previewBox.classList.remove('hidden');
+            els.dropzone.classList.add('hidden');
+          } else {
+            els.previewImg.removeAttribute('src');
+            els.previewBox.classList.add('hidden');
+            els.dropzone.classList.remove('hidden');
+          }
+
+          renderPresetButtons();
+          updateSubmitState();
+        }
+
+        function updateSubmitState() {
+          var valid =
+            state.description.trim().length > 0 &&
+            state.targetAudience.trim().length > 0 &&
+            state.mood.trim().length > 0;
+          els.submitBtn.disabled = !valid;
+        }
+
+        /* Programmatic self-contained Canvas sample generators (100% offline-safe) */
+        function createSampleBlueprintDataUrl() {
+          var c = document.createElement('canvas');
+          c.width = 960;
+          c.height = 720;
+          var ctx = c.getContext('2d');
+          ctx.fillStyle = '#F8FAFC';
+          ctx.fillRect(0, 0, 960, 720);
+
+          // Technical drafting grid
+          ctx.strokeStyle = '#E2E8F0';
+          ctx.lineWidth = 1;
+          for (var x = 40; x < 960; x += 40) {
+            ctx.beginPath();
+            ctx.moveTo(x, 24);
+            ctx.lineTo(x, 696);
+            ctx.stroke();
+          }
+          for (var y = 40; y < 720; y += 40) {
+            ctx.beginPath();
+            ctx.moveTo(24, y);
+            ctx.lineTo(936, y);
+            ctx.stroke();
+          }
+
+          // Outer frame
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(28, 28, 904, 664);
+
+          // Isometric modular desk organizer drawing
+          ctx.save();
+          ctx.translate(480, 355);
+          ctx.strokeStyle = '#0F172A';
+          ctx.lineWidth = 2.2;
+          ctx.fillStyle = '#FFFFFF';
+
+          // Base plate isometric
+          ctx.beginPath();
+          ctx.moveTo(-240, 20);
+          ctx.lineTo(40, -130);
+          ctx.lineTo(250, -25);
+          ctx.lineTo(-30, 125);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Base depth
+          ctx.fillStyle = '#E2E8F0';
+          ctx.beginPath();
+          ctx.moveTo(-240, 20);
+          ctx.lineTo(-30, 125);
+          ctx.lineTo(-30, 152);
+          ctx.lineTo(-240, 47);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#CBD5E1';
+          ctx.beginPath();
+          ctx.moveTo(-30, 125);
+          ctx.lineTo(250, -25);
+          ctx.lineTo(250, 2);
+          ctx.lineTo(-30, 152);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Walnut pen cup block (left)
+          ctx.fillStyle = '#D6C7B2';
+          ctx.beginPath();
+          ctx.moveTo(-200, -5);
+          ctx.lineTo(-105, -55);
+          ctx.lineTo(-25, -15);
+          ctx.lineTo(-120, 35);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#B08968';
+          ctx.beginPath();
+          ctx.moveTo(-200, -5);
+          ctx.lineTo(-120, 35);
+          ctx.lineTo(-120, -65);
+          ctx.lineTo(-200, -105);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#9C7353';
+          ctx.beginPath();
+          ctx.moveTo(-120, 35);
+          ctx.lineTo(-25, -15);
+          ctx.lineTo(-25, -115);
+          ctx.lineTo(-120, -65);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#EFE7DC';
+          ctx.beginPath();
+          ctx.moveTo(-200, -105);
+          ctx.lineTo(-105, -155);
+          ctx.lineTo(-25, -115);
+          ctx.lineTo(-120, -65);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Aluminum tray module (right)
+          ctx.fillStyle = '#F1F5F9';
+          ctx.beginPath();
+          ctx.moveTo(15, -75);
+          ctx.lineTo(125, -132);
+          ctx.lineTo(220, -84);
+          ctx.lineTo(110, -27);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Dimension lines
+          ctx.strokeStyle = '#1D4ED8';
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(-240, 75);
+          ctx.lineTo(-30, 180);
+          ctx.stroke();
+
+          ctx.fillStyle = '#1D4ED8';
+          ctx.font = '600 16px "JetBrains Mono", monospace';
+          ctx.fillText('320 mm', -170, 152);
+          ctx.fillText('140 mm', 135, 95);
+          ctx.fillText('WALNUT CUP', -290, -130);
+          ctx.fillText('ANODIZED AL TRAY', 110, -155);
+          ctx.restore();
+
+          // Title block bottom right
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(590, 575, 320, 95);
+          ctx.fillStyle = '#0F172A';
+          ctx.font = '700 18px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('MODULAR DESK SYSTEM DO-01', 608, 608);
+          ctx.fillStyle = '#475569';
+          ctx.font = '500 14px "JetBrains Mono", monospace';
+          ctx.fillText('MATERIAL: WALNUT + AL-6061', 608, 634);
+          ctx.fillText('SCALE 1:2 · ISOMETRIC REV.A', 608, 656);
+
+          return c.toDataURL('image/png');
+        }
+
+        function createSampleProductDataUrl() {
+          var c = document.createElement('canvas');
+          c.width = 960;
+          c.height = 720;
+          var ctx = c.getContext('2d');
+
+          // Soft studio backdrop gradient
+          var bg = ctx.createLinearGradient(0, 0, 960, 720);
+          bg.addColorStop(0, '#F4F1EC');
+          bg.addColorStop(1, '#E5E0D8');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, 960, 720);
+
+          // Travertine stone plinth
+          ctx.fillStyle = '#DCD5CA';
+          ctx.fillRect(140, 490, 680, 140);
+          ctx.fillStyle = '#EAE4DA';
+          ctx.beginPath();
+          ctx.moveTo(140, 490);
+          ctx.lineTo(220, 445);
+          ctx.lineTo(860, 445);
+          ctx.lineTo(820, 490);
+          ctx.closePath();
+          ctx.fill();
+
+          // Shadow under ceramic dripper
+          var sh = ctx.createRadialGradient(480, 476, 12, 480, 476, 130);
+          sh.addColorStop(0, 'rgba(15, 23, 42, 0.28)');
+          sh.addColorStop(1, 'rgba(15, 23, 42, 0)');
+          ctx.fillStyle = sh;
+          ctx.beginPath();
+          ctx.ellipse(480, 476, 130, 26, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Ceramic dripper base flange
+          ctx.fillStyle = '#27272A';
+          ctx.beginPath();
+          ctx.ellipse(480, 464, 112, 22, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Ceramic cone body
+          var coneGrad = ctx.createLinearGradient(340, 230, 620, 450);
+          coneGrad.addColorStop(0, '#3F3F46');
+          coneGrad.addColorStop(0.55, '#27272A');
+          coneGrad.addColorStop(1, '#18181B');
+          ctx.fillStyle = coneGrad;
+          ctx.beginPath();
+          ctx.moveTo(336, 232);
+          ctx.lineTo(624, 232);
+          ctx.lineTo(540, 456);
+          ctx.lineTo(420, 456);
+          ctx.closePath();
+          ctx.fill();
+
+          // Fluted vertical ribs
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+          ctx.lineWidth = 3;
+          for (var i = -5; i <= 5; i++) {
+            ctx.beginPath();
+            ctx.moveTo(480 + i * 24, 244);
+            ctx.lineTo(480 + i * 10, 448);
+            ctx.stroke();
+          }
+
+          // Top rim
+          ctx.fillStyle = '#1F2024';
+          ctx.beginPath();
+          ctx.ellipse(480, 232, 144, 28, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#52525B';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          // Side handle
+          ctx.strokeStyle = '#27272A';
+          ctx.lineWidth = 18;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(602, 275);
+          ctx.bezierCurveTo(685, 270, 680, 395, 566, 405);
+          ctx.stroke();
+
+          return c.toDataURL('image/png');
+        }
+
+        function processFile(file) {
+          els.fileError.classList.add('hidden');
+          if (!file.type || file.type.indexOf('image/') !== 0) {
+            els.fileError.textContent = 'PNG, JPG, WebP 형식의 이미지 파일만 업로드할 수 있습니다.';
+            els.fileError.classList.remove('hidden');
+            return;
+          }
+          if (file.size > 10 * 1024 * 1024) {
+            els.fileError.textContent = '이미지 용량은 10MB 이하만 지원합니다.';
+            els.fileError.classList.remove('hidden');
+            return;
+          }
+          var reader = new FileReader();
+          reader.onload = function () {
+            var dataUrl = reader.result;
+            state.imagePreviewUrl = dataUrl;
+            state.imageBase64 = dataUrl.split(',')[1] || '';
+            state.imageMimeType = file.type;
+            syncFormFromState();
+          };
+          reader.readAsDataURL(file);
+        }
+
+        function extractPaletteFromImage(imageUrl) {
+          return new Promise(function (resolve) {
+            if (!imageUrl) {
+              resolve({ accentHex: '#1D4ED8', bgHex: '#EEF2FF', ratioText: '비율 정보 없음' });
+              return;
+            }
+            var img = new Image();
+            img.onload = function () {
+              try {
+                var c = document.createElement('canvas');
+                c.width = 48;
+                c.height = 48;
+                var ctx = c.getContext('2d');
+                ctx.drawImage(img, 0, 0, 48, 48);
+                var data = ctx.getImageData(0, 0, 48, 48).data;
+                var bestR = 29,
+                  bestG = 78,
+                  bestB = 216,
+                  bestScore = -1;
+                for (var i = 0; i < data.length; i += 4) {
+                  var r = data[i],
+                    g = data[i + 1],
+                    b = data[i + 2];
+                  var max = Math.max(r, g, b),
+                    min = Math.min(r, g, b);
+                  var sat = max === 0 ? 0 : (max - min) / max;
+                  var lum = (r + g + b) / 3;
+                  if (lum > 35 && lum < 220) {
+                    var score = sat * 2 + (1 - Math.abs(lum - 115) / 140);
+                    if (score > bestScore) {
+                      bestScore = score;
+                      bestR = r;
+                      bestG = g;
+                      bestB = b;
+                    }
+                  }
+                }
+                var toHex = function (v) {
+                  var h = Math.max(18, Math.min(200, Math.round(v))).toString(16);
+                  return h.length === 1 ? '0' + h : h;
+                };
+                var accentHex = '#' + toHex(bestR * 0.82) + toHex(bestG * 0.82) + toHex(bestB * 0.82);
+                var ratio = (img.width / Math.max(1, img.height)).toFixed(2);
+                resolve({
+                  accentHex: accentHex.toUpperCase(),
+                  bgHex: '#F1F5F9',
+                  ratioText: img.width + '×' + img.height + 'px (비율 ' + ratio + ')',
+                });
+              } catch (e) {
+                resolve({ accentHex: '#1D4ED8', bgHex: '#EEF2FF', ratioText: '이미지 로드 완료' });
+              }
+            };
+            img.onerror = function () {
+              resolve({ accentHex: '#1D4ED8', bgHex: '#EEF2FF', ratioText: '이미지 로드 완료' });
+            };
+            img.src = imageUrl;
+          });
+        }
+
+        function detectCategoryAndTraits(name, desc, target, mood) {
+          var text = (name + ' ' + desc + ' ' + target + ' ' + mood).toLowerCase();
+          var category = '라이프스타일 · 디자인 굿즈';
+          var basePrice = 39000;
+          var materialHints = [];
+
+          if (/커피|드리퍼|텀블러|머그|컵|주전자|티|차/.test(text)) {
+            category = '홈카페 · 키친웨어';
+            basePrice = 38900;
+          } else if (/데스크|책상|오거나이저|트레이|모니터|거치대|문구|노트/.test(text)) {
+            category = '데스크웨어 · 홈오피스';
+            basePrice = 54900;
+          } else if (/조명|램프|스탠드|무드등/.test(text)) {
+            category = '리빙 조명 · 오브제';
+            basePrice = 69000;
+          } else if (/가방|파우치|백팩|지갑|에코백|의류|자켓|니트/.test(text)) {
+            category = '패션 · 데일리 액세서리';
+            basePrice = 58000;
+          } else if (/화장품|세럼|크림|향수|디퓨저|캔들|바디|스킨/.test(text)) {
+            category = '뷰티 · 프래그런스';
+            basePrice = 42000;
+          } else if (/스피커|충전기|케이스|전자|키보드|가전|스마트/.test(text)) {
+            category = '테크 · 디바이스 액세서리';
+            basePrice = 79000;
+          }
+
+          if (/월넛|원목|나무|우드|오크/.test(text)) materialHints.push('천연 원목 결감');
+          if (/알루미늄|스틸|메탈|스테인리스|브러시드|아노다이징/.test(text))
+            materialHints.push('정밀 가공 금속 마감');
+          if (/세라믹|도자기|매트|차콜|소성/.test(text)) materialHints.push('고온 소성 무광 세라믹');
+          if (/가죽|레더/.test(text)) materialHints.push('가죽 스티치 디테일');
+          if (/실리콘|친환경|리사이클|패브릭|린넨/.test(text))
+            materialHints.push('지속가능 · 촉감 친화 소재');
+
+          var specs = desc.match(/\d+(?:\.\d+)?\s*(?:mm|cm|m|g|kg|ml|l|도|개|시간)/gi) || [];
+
+          return {
+            category: category,
+            basePrice: basePrice,
+            materialSummary: materialHints.length > 0 ? materialHints.join('과 ') : '절제된 형태와 실용 구조',
+            specs: specs.slice(0, 3),
+          };
+        }
+
+        function roundPsychologicalPrice(rawPrice) {
+          if (rawPrice <= 15000) return Math.round(rawPrice / 1000) * 1000 - 100;
+          if (rawPrice <= 50000) return Math.round(rawPrice / 1000) * 1000 - 100;
+          if (rawPrice <= 150000) return Math.round(rawPrice / 1000) * 1000;
+          return Math.round(rawPrice / 5000) * 5000;
+        }
+
+        async function generateStandaloneStrategy(brief) {
+          var palette = await extractPaletteFromImage(brief.imagePreviewUrl);
+          var info = detectCategoryAndTraits(
+            brief.productName,
+            brief.description,
+            brief.targetAudience,
+            brief.mood
+          );
+
+          var displayName = brief.productName.trim() || info.category + ' 신제품';
+          var shortTarget = brief.targetAudience.split(',')[0].split('·')[0].trim();
+          var isHighEnd = /하이엔드|프리미엄|건축|럭셔리|고급|미니멀/.test(brief.mood);
+          var isWarm = /따뜻|내추럴|감성|리추얼|아늑/.test(brief.mood);
+          var isTech = /테크|인더스트리얼|모듈|스마트/.test(brief.mood);
+
+          var accentHex = isWarm
+            ? '#9A5B32'
+            : isHighEnd
+              ? '#0F172A'
+              : palette.accentHex || '#1D4ED8';
+          var bgHex = isWarm ? '#F5F0EA' : isHighEnd ? '#F1F5F9' : '#EEF2FF';
+
+          var parsedCost = Number(brief.estimatedCostKrw);
+          var recPrice;
+          if (parsedCost > 0) {
+            var multiplier = isHighEnd ? 2.9 : isWarm ? 2.6 : 2.4;
+            recPrice = roundPsychologicalPrice(parsedCost * multiplier);
+          } else {
+            var moodFactor = isHighEnd ? 1.25 : isWarm ? 1.08 : 1.0;
+            recPrice = roundPsychologicalPrice(info.basePrice * moodFactor);
+          }
+
+          var minPrice = roundPsychologicalPrice(recPrice * 0.84);
+          var maxPrice = roundPsychologicalPrice(recPrice * 1.22);
+          var earlyBirdPrice = roundPsychologicalPrice(recPrice * 0.82);
+          var bundlePrice = roundPsychologicalPrice(recPrice * 1.78);
+
+          var mainSlogan = isHighEnd
+            ? shortTarget + '의 시선을 정리하는 하나의 기준, ' + displayName
+            : isWarm
+              ? '매일의 루틴이 조용히 깊어지는 순간, ' + displayName
+              : isTech
+                ? '필요한 기능만 정교하게 남긴 설계, ' + displayName
+                : shortTarget + '의 일상을 가장 단정하게 바꾸는 ' + displayName;
+
+          var subTagline =
+            info.materialSummary +
+            (info.specs.length > 0 ? '(' + info.specs.join(', ') + ')' : '') +
+            '을(를) 바탕으로 ' +
+            brief.mood +
+            ' 무드를 구현했습니다.';
+
+          var visualInsights = [
+            brief.imagePreviewUrl
+              ? (brief.imageKind === 'blueprint'
+                  ? '첨부 도면(' + palette.ratioText + ')의 비례와 구조 라인을 따라 불필요한 장식을 덜어낸 실용적 설계가 돋보입니다.'
+                  : '제품 사진(' + palette.ratioText + ')에서 확인되는 표면 질감과 균형 잡힌 실루엣이 ' + brief.mood + ' 인상을 명확히 전달합니다.')
+              : '제품 설명에 담긴 핵심 사용 시나리오가 타깃층의 일상 동선과 자연스럽게 맞물립니다.',
+            info.materialSummary + ' 중심의 물성 대비가 가격대 이상의 시각적 신뢰감을 형성합니다.',
+            info.specs.length > 0
+              ? '구체적인 규격(' + info.specs.join(' · ') + ')을 상세페이지와 광고 첫 컷에 노출하면 구매 망설임을 줄일 수 있습니다.'
+              : shortTarget + '의 실제 사용 환경에서 체감되는 수납·사용 편의성이 핵심 구매 전환 포인트입니다.',
+          ];
+
+          var cleanHashtagBase = displayName.replace(/\s+/g, '').slice(0, 12);
+
+          return {
+            productAnalysis: {
+              detectedCategory: info.category,
+              visualInsights: visualInsights,
+              coreValueProposition:
+                shortTarget +
+                '이(가) 매일 마주하는 공간과 습관 속에서 ' +
+                info.materialSummary +
+                ' 기반의 안정적인 사용 경험을 제공하며, ' +
+                brief.mood +
+                ' 취향을 즉각적으로 완성합니다.',
+            },
+            slogans: {
+              mainSlogan: mainSlogan,
+              subTagline: subTagline,
+              variations: [
+                {
+                  toneLabel: '직관 · 기능형',
+                  slogan: '불편은 덜고 본질만 남긴 ' + displayName,
+                  usageTip: '네이버 쇼핑 검색 광고 제목 및 상세페이지 최상단 배너 추천',
+                },
+                {
+                  toneLabel: '감성 · 라이프스타일형',
+                  slogan: '오늘의 공간에 ' + brief.mood.split(',')[0].trim() + ' 한 스푼',
+                  usageTip: '인스타그램 피드 1차 후킹 카피 및 브랜드 룩북 표지 추천',
+                },
+                {
+                  toneLabel: '프리미엄 · 절제형',
+                  slogan: '오래 곁에 둘수록 가치가 선명해지는 선택',
+                  usageTip: '패키지 슬리브 인쇄 및 VIP 사전 예약 페이지 추천',
+                },
+                {
+                  toneLabel: '위트 · 후킹형',
+                  slogan: '다들 어디서 샀냐고 묻기 전에 먼저 두는 ' + displayName,
+                  usageTip: '인스타 스토리·릴스 첫 3초 자막 후킹용 추천',
+                },
+              ],
+            },
+            instagramAd: {
+              visualHeadline: (displayName.length > 13 ? shortTarget + '의 새 기준' : displayName).slice(0, 16),
+              visualSubcopy: (info.materialSummary + '의 단정한 완성도').slice(0, 28),
+              ctaBadgeText: '런칭 얼리버드 보기',
+              suggestedAccentHex: accentHex,
+              suggestedBgHex: bgHex,
+              artDirectionGuide:
+                brief.imageKind === 'blueprint'
+                  ? '도면의 직선과 비례가 살아나도록 무광 스톤·밝은 회색 호리존 배경 위에서 45도 측면 자연광(디퓨저 통과광)으로 목업 촬영을 진행하세요. 치수 스케치 오버레이를 2번째 캐러셀 컷에 배치하면 제작 진정성이 배가됩니다.'
+                  : '실물 사진의 질감이 돋보이도록 오전 창가 측면광 아래 중성 톤 테이블 위에 단독 배치하고, 타깃 고객의 손동작이 들어간 사용 컷을 서브 컷으로 구성하세요.',
+              feedCaption:
+                shortTarget +
+                '이라면 한 번쯤 고민해봤을 일상 속 작은 불편함.\n\n' +
+                displayName +
+                '은(는) ' +
+                info.materialSummary +
+                '으로 오래 쓸수록 만족감이 커지도록 설계했습니다.\n\n' +
+                '• ' +
+                brief.description.slice(0, 85).trim() +
+                (brief.description.length > 85 ? '...' : '') +
+                '\n• ' +
+                brief.mood +
+                ' 무드에 어울리는 절제된 컬러 밸런스\n\n지금 프로필 링크에서 첫 런칭 한정 혜택을 확인해 보세요.',
+              storyHookText:
+                '아직도 불편하게 쓰고 계셨나요?\n' +
+                displayName +
+                ' 하나로 달라지는 ' +
+                shortTarget +
+                '의 루틴',
+              hashtags: [
+                '#' + cleanHashtagBase,
+                '#' + info.category.split('·')[0].trim().replace(/\s+/g, ''),
+                '#신제품런칭',
+                '#디자인소품',
+                '#홈스타일링',
+                '#미니멀라이프',
+                '#취향소비',
+                '#선물추천',
+              ],
+            },
+            adCopywriting: {
+              performanceAds: [
+                {
+                  channel: '메타 피드 광고 (인스타·페북)',
+                  headline: shortTarget + ' 취향 저격, ' + displayName + ' 프리오더 오픈',
+                  body:
+                    brief.mood +
+                    ' 감성과 ' +
+                    info.materialSummary +
+                    '의 만남. 런칭 기간 한정 얼리버드 혜택으로 가장 먼저 경험해 보세요.',
+                },
+                {
+                  channel: '네이버 쇼핑 · 검색 광고',
+                  headline: '[' + info.category.split('·')[0].trim() + '] ' + displayName + ' 공식 런칭',
+                  body:
+                    (info.specs.length > 0 ? info.specs.join('/') + ' 규격 · ' : '') +
+                    '꼼꼼한 마감과 실용적인 구조로 매일 손이 가는 데일리 아이템.',
+                },
+                {
+                  channel: '카카오 비즈보드',
+                  headline: '첫 인상부터 다른 ' + displayName,
+                  body: shortTarget + '을(를) 위해 설계된 ' + brief.mood + ' 신제품 특가 확인하기',
+                },
+              ],
+              detailPageHero: {
+                problemStatement:
+                  '시중에 비슷한 제품은 많지만, 막상 내 공간과 취향에 두고 오래 쓰고 싶은 완성도를 찾기 어려우셨나요?',
+                solutionStatement:
+                  displayName +
+                  '은(는) ' +
+                  info.materialSummary +
+                  '을(를) 중심으로 설계부터 마감까지 불필요한 타협 없이 완성했습니다.',
+                keyBullets: [
+                  info.materialSummary + ' 적용으로 오랜 사용에도 변형과 질림이 적은 내구성',
+                  shortTarget + '의 실제 사용 동선을 고려한 직관적인 구조와 안정적인 비례',
+                  brief.mood + ' 공간 어디에 두어도 자연스럽게 스며드는 절제된 컬러와 마감',
+                  '첫 런칭 구매 고객 대상 초기 한정 패키지 및 얼리버드 혜택 제공',
+                ],
+              },
+              shortFormScript: [
+                {
+                  timeRange: '0~3초',
+                  visualCue: '기존의 어수선하거나 아쉬운 사용 환경 클로즈업 후 화면 전환',
+                  narration: '매일 쓰는 제품인데, 왜 항상 어딘가 아쉬웠을까요?',
+                },
+                {
+                  timeRange: '3~10초',
+                  visualCue:
+                    (brief.imageKind === 'blueprint' ? '설계 도면 스케치에서 ' : '') +
+                    displayName +
+                    ' 디테일 3컷 연속 슬로우 모션',
+                  narration:
+                    info.materialSummary +
+                    '에 ' +
+                    brief.mood +
+                    ' 무드를 담아 처음부터 다시 설계했습니다.',
+                },
+                {
+                  timeRange: '10~15초',
+                  visualCue: '완성된 사용 장면 풀샷 + 하단 런칭가/프로필 링크 안내 자막',
+                  narration:
+                    '지금 ' +
+                    formatKrw(earlyBirdPrice) +
+                    ' 런칭 혜택으로 ' +
+                    displayName +
+                    '을(를) 만나보세요.',
+                },
+              ],
+            },
+            pricing: {
+              recommendedPriceKrw: recPrice,
+              priceRangeMinKrw: minPrice,
+              priceRangeMaxKrw: maxPrice,
+              positioningLabel: isHighEnd
+                ? '하이엔드 디자인 포지션'
+                : isWarm
+                  ? '감성 매스 프리미엄'
+                  : '합리적 프리미엄 데일리',
+              pricingRationale:
+                (parsedCost > 0
+                  ? '입력하신 개당 제조 원가 ' +
+                    formatKrw(parsedCost) +
+                    '을 기준으로 플랫폼 수수료(약 12%)와 초기 홍보비 회수 마진을 확보하고, '
+                  : '소재(' + info.materialSummary + ')와 공정 특성, ') +
+                shortTarget +
+                '의 평균 지불 의향 및 ' +
+                brief.mood +
+                ' 포지셔닝을 반영해 ' +
+                formatKrw(recPrice) +
+                '을 최적 권장가로 도출했습니다.',
+              psychologicalTip:
+                '상세페이지 최상단에는 공식 정가(' +
+                formatKrw(recPrice) +
+                ')를 먼저 제시해 기준점을 형성한 뒤, 런칭 초기에는 얼리버드 할인율(약 18%)을 강조해 초기 리뷰 확보 속도를 높이세요.',
+              tiers: [
+                {
+                  tierName: '1단계 · 얼리버드 런칭가',
+                  targetSegment: '초기 팬덤 · 와디즈/자사몰 사전예약',
+                  priceKrw: earlyBirdPrice,
+                  discountNote: '정가 대비 약 18% 혜택',
+                  strategyNote: '초기 구매 후기 30~50건과 실사용 콘텐츠를 빠르게 확보하는 진입 가격',
+                },
+                {
+                  tierName: '2단계 · 공식 판매 정가',
+                  targetSegment: '네이버 스마트스토어 · 자사몰 상시 판매',
+                  priceKrw: recPrice,
+                  discountNote: '기준 권장 소비자가 (핵심 마진 구간)',
+                  strategyNote: '브랜드 가치 유지와 안정적인 광고비(ROAS) 집행이 가능한 표준 가격',
+                },
+                {
+                  tierName: '3단계 · 기프트 / 2개 세트',
+                  targetSegment: '커플·선물 수요 · 객단가 상승용',
+                  priceKrw: bundlePrice,
+                  discountNote: '2개 묶음 약 11% 추가 할인 + 전용 패키지',
+                  strategyNote: '배송비 절감과 객단가(AOV) 극대화로 순수익을 끌어올리는 번들 구성',
+                },
+              ],
+            },
+          };
+        }
+
+        async function runAnalysis() {
+          els.errorBanner.classList.add('hidden');
+          els.welcomePanel.classList.add('hidden');
+          els.resultsPanel.classList.add('hidden');
+          els.loadingPanel.classList.remove('hidden');
+          els.submitBtn.disabled = true;
+          els.submitBtn.textContent = '전략 생성 중...';
+
+          try {
+            var strategy = null;
+            var useLocalFallback = window.location.protocol === 'file:';
+
+            if (!useLocalFallback) {
+              try {
+                var res = await fetch('/api/analyze-product', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    productName: state.productName,
+                    imageKind: state.imageKind,
+                    imageBase64: state.imageBase64,
+                    imageMimeType: state.imageMimeType,
+                    description: state.description,
+                    targetAudience: state.targetAudience,
+                    mood: state.mood,
+                    estimatedCostKrw: state.estimatedCostKrw,
+                  }),
+                });
+                if (res.status === 404 || res.status === 405) {
+                  useLocalFallback = true;
+                } else {
+                  var data = await res.json();
+                  if (!res.ok) {
+                    throw new Error(data.error || '전략 생성 요청에 실패했습니다.');
+                  }
+                  strategy = data;
+                }
+              } catch (fetchErr) {
+                if (
+                  fetchErr instanceof TypeError ||
+                  String(fetchErr.message).indexOf('Failed to fetch') !== -1
+                ) {
+                  useLocalFallback = true;
+                } else {
+                  throw fetchErr;
+                }
+              }
+            }
+
+            if (useLocalFallback || !strategy) {
+              strategy = await generateStandaloneStrategy(state);
+            }
+
+            applyStrategyResult(strategy, true);
+          } catch (err) {
+            els.loadingPanel.classList.add('hidden');
+            els.errorText.textContent =
+              err && err.message ? err.message : '전략 생성 중 오류가 발생했습니다.';
+            els.errorBanner.classList.remove('hidden');
+            if (state.result) {
+              els.resultsPanel.classList.remove('hidden');
+            } else {
+              els.welcomePanel.classList.remove('hidden');
+            }
+          } finally {
+            els.submitBtn.textContent = '브랜드 런칭 전략 생성하기';
+            updateSubmitState();
+          }
+        }
+
+        function applyStrategyResult(strategy, saveToHistory) {
+          state.result = strategy;
+          state.igHeadline = strategy.instagramAd.visualHeadline;
+          state.igSubcopy = strategy.instagramAd.visualSubcopy;
+          state.igCta = strategy.instagramAd.ctaBadgeText;
+          state.simPrice = strategy.pricing.recommendedPriceKrw;
+          var parsedCost = Number(state.estimatedCostKrw);
+          state.simCost =
+            parsedCost > 0
+              ? parsedCost
+              : Math.round(strategy.pricing.recommendedPriceKrw * 0.32);
+
+          if (saveToHistory) {
+            var rec = {
+              id: String(Date.now()),
+              createdAt: new Date().toISOString(),
+              brief: {
+                productName: state.productName,
+                imageKind: state.imageKind,
+                description: state.description,
+                targetAudience: state.targetAudience,
+                mood: state.mood,
+                estimatedCostKrw: state.estimatedCostKrw,
+              },
+              result: strategy,
+            };
+            state.savedRecords = [rec].concat(state.savedRecords).slice(0, 15);
+            persistSavedRecords();
+          }
+
+          els.loadingPanel.classList.add('hidden');
+          els.welcomePanel.classList.add('hidden');
+          els.resultsPanel.classList.remove('hidden');
+          renderResults();
+        }
+
+        function copyTextWithFeedback(btn, text) {
+          var original = btn.textContent;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+              btn.textContent = '복사됨';
+              setTimeout(function () {
+                btn.textContent = original;
+              }, 1600);
+            });
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            btn.textContent = '복사됨';
+            setTimeout(function () {
+              btn.textContent = original;
+            }, 1600);
+          }
+        }
+
+        function wrapCanvasLines(ctx, text, maxWidth) {
+          var words = String(text || '').split(/\s+/);
+          var lines = [];
+          var current = '';
+          for (var i = 0; i < words.length; i++) {
+            var word = words[i];
+            var test = current ? current + ' ' + word : word;
+            if (ctx.measureText(test).width <= maxWidth) {
+              current = test;
+            } else {
+              if (current) lines.push(current);
+              current = word;
+            }
+          }
+          if (current) lines.push(current);
+          return lines;
+        }
+
+        function exportInstagramPng() {
+          if (!state.result) return;
+          var ig = state.result.instagramAd;
+          var width = 1080;
+          var height = state.igFormat === 'feed' ? 1350 : 1920;
+          var c = document.createElement('canvas');
+          c.width = width;
+          c.height = height;
+          var ctx = c.getContext('2d');
+
+          var isDark = state.igTheme === 'dark';
+          var isAccent = state.igTheme === 'accent';
+          var bgColor = isDark ? '#0F172A' : isAccent ? ig.suggestedBgHex || '#EEF2FF' : '#FFFFFF';
+          var textColor = isDark ? '#F8FAFC' : '#0F172A';
+          var mutedColor = isDark ? '#CBD5E1' : '#475569';
+          var accentColor = ig.suggestedAccentHex || '#1D4ED8';
+
+          ctx.fillStyle = bgColor;
+          ctx.fillRect(0, 0, width, height);
+
+          var pad = 72;
+          ctx.fillStyle = mutedColor;
+          ctx.font = '600 26px "Plus Jakarta Sans", "Noto Sans KR", sans-serif';
+          ctx.fillText('@' + (state.igHandle || 'atelier_official'), pad, pad + 26);
+
+          var imgTop = pad + 64;
+          var imgW = width - pad * 2;
+          var imgH = state.igFormat === 'feed' ? 760 : 1120;
+
+          var finishDraw = function () {
+            var copyY = imgTop + imgH + 76;
+            ctx.fillStyle = textColor;
+            ctx.font = '700 54px "Plus Jakarta Sans", "Noto Sans KR", sans-serif';
+            var hLines = wrapCanvasLines(ctx, state.igHeadline, imgW);
+            for (var i = 0; i < Math.min(2, hLines.length); i++) {
+              ctx.fillText(hLines[i], pad, copyY);
+              copyY += 68;
+            }
+
+            copyY += 8;
+            ctx.fillStyle = mutedColor;
+            ctx.font = '400 32px "Plus Jakarta Sans", "Noto Sans KR", sans-serif';
+            var sLines = wrapCanvasLines(ctx, state.igSubcopy, imgW);
+            for (var j = 0; j < Math.min(2, sLines.length); j++) {
+              ctx.fillText(sLines[j], pad, copyY);
+              copyY += 44;
+            }
+
+            var btnH = 76;
+            var btnY = height - pad - btnH;
+            ctx.font = '600 30px "Plus Jakarta Sans", "Noto Sans KR", sans-serif';
+            var ctaTxt = state.igCta || '자세히 보기';
+            var ctaW = Math.min(imgW, Math.max(280, ctx.measureText(ctaTxt).width + 96));
+            ctx.fillStyle = accentColor;
+            ctx.beginPath();
+            ctx.roundRect(pad, btnY, ctaW, btnH, 12);
+            ctx.fill();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(ctaTxt, pad + 48, btnY + btnH / 2);
+
+            var link = document.createElement('a');
+            link.download = 'instagram-' + state.igFormat + '-ad.png';
+            link.href = c.toDataURL('image/png');
+            link.click();
+          };
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(pad, imgTop, imgW, imgH, 20);
+          ctx.clip();
+
+          if (state.imagePreviewUrl) {
+            var img = new Image();
+            img.onload = function () {
+              var scale = Math.max(imgW / img.width, imgH / img.height);
+              var dw = img.width * scale;
+              var dh = img.height * scale;
+              ctx.drawImage(img, pad + (imgW - dw) / 2, imgTop + (imgH - dh) / 2, dw, dh);
+              ctx.restore();
+              finishDraw();
+            };
+            img.onerror = function () {
+              ctx.fillStyle = isDark ? '#1E293B' : '#E2E8F0';
+              ctx.fillRect(pad, imgTop, imgW, imgH);
+              ctx.restore();
+              finishDraw();
+            };
+            img.src = state.imagePreviewUrl;
+          } else {
+            ctx.fillStyle = isDark ? '#1E293B' : '#E2E8F0';
+            ctx.fillRect(pad, imgTop, imgW, imgH);
+            ctx.restore();
+            finishDraw();
+          }
+        }
+
+        function renderResults() {
+          var r = state.result;
+          if (!r) return;
+
+          var ig = r.instagramAd;
+          var accentHex = ig.suggestedAccentHex || '#1D4ED8';
+          var cardBg =
+            state.igTheme === 'dark'
+              ? '#0F172A'
+              : state.igTheme === 'accent'
+                ? ig.suggestedBgHex || '#EEF2FF'
+                : '#FFFFFF';
+          var cardColor = state.igTheme === 'dark' ? '#F8FAFC' : '#0F172A';
+
+          var feeAmt = Math.round((state.simPrice * state.simFee) / 100);
+          var netUnit = state.simPrice - state.simCost - feeAmt;
+          var netMargin =
+            state.simPrice > 0 ? Math.round((netUnit / state.simPrice) * 1000) / 10 : 0;
+          var bepUnits = netUnit > 0 ? Math.ceil(state.simFixed / netUnit) : null;
+
+          var minP = r.pricing.priceRangeMinKrw;
+          var maxP = Math.max(r.pricing.priceRangeMaxKrw, minP + 1);
+          var recPct = Math.min(
+            100,
+            Math.max(0, ((r.pricing.recommendedPriceKrw - minP) / (maxP - minP)) * 100)
+          );
+
+          var variationsHtml = r.slogans.variations
+            .map(function (v, idx) {
+              return (
+                '<div class="sub-card">' +
+                '<div>' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">' +
+                '<span style="font-size:12px;font-weight:600;color:var(--accent);">' +
+                escapeHtml(v.toneLabel) +
+                '</span>' +
+                '<button type="button" class="btn-copy" data-copy-var="' +
+                idx +
+                '">복사</button>' +
+                '</div>' +
+                '<p style="margin:6px 0 0;font-size:15px;font-weight:600;color:var(--text-primary);line-height:1.45;">' +
+                escapeHtml(v.slogan) +
+                '</p>' +
+                '</div>' +
+                '<p style="margin:0;font-size:12px;color:var(--text-muted);">' +
+                escapeHtml(v.usageTip) +
+                '</p>' +
+                '</div>'
+              );
+            })
+            .join('');
+
+          var copyBodyHtml = '';
+          if (state.copyTab === 'performance') {
+            copyBodyHtml =
+              '<div class="three-col">' +
+              r.adCopywriting.performanceAds
+                .map(function (ad, idx) {
+                  return (
+                    '<div class="sub-card">' +
+                    '<div>' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">' +
+                    '<span style="font-size:12px;font-weight:600;color:var(--accent);">' +
+                    escapeHtml(ad.channel) +
+                    '</span>' +
+                    '<button type="button" class="btn-copy" data-copy-perf="' +
+                    idx +
+                    '">복사</button>' +
+                    '</div>' +
+                    '<h3 style="margin:8px 0 6px;font-size:14px;font-weight:700;line-height:1.45;">' +
+                    escapeHtml(ad.headline) +
+                    '</h3>' +
+                    '<p style="margin:0;font-size:12px;color:var(--text-secondary);line-height:1.6;">' +
+                    escapeHtml(ad.body) +
+                    '</p>' +
+                    '</div>' +
+                    '</div>'
+                  );
+                })
+                .join('') +
+              '</div>';
+          } else if (state.copyTab === 'detail') {
+            copyBodyHtml =
+              '<div class="variations-grid" style="margin-top:20px;">' +
+              '<div class="sub-card"><div><span class="section-kicker">고객 문제 공감</span><p style="margin:6px 0 0;font-size:14px;font-weight:500;line-height:1.6;">' +
+              escapeHtml(r.adCopywriting.detailPageHero.problemStatement) +
+              '</p></div></div>' +
+              '<div class="sub-card" style="background:#f8fafc;"><div><span class="section-kicker" style="color:var(--accent);">제품 해결책 선언</span><p style="margin:6px 0 0;font-size:14px;font-weight:600;line-height:1.6;">' +
+              escapeHtml(r.adCopywriting.detailPageHero.solutionStatement) +
+              '</p></div></div>' +
+              '</div>' +
+              '<div style="margin-top:18px;">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<h3 style="margin:0;font-size:14px;font-weight:600;">상세페이지 핵심 소구 포인트</h3>' +
+              '<button type="button" id="copy-detail-btn" class="btn-copy">전체 카피 복사</button>' +
+              '</div>' +
+              '<div class="table-wrap" style="margin-top:10px;"><table><tbody>' +
+              r.adCopywriting.detailPageHero.keyBullets
+                .map(function (b, idx) {
+                  return (
+                    '<tr><td class="font-mono tabular-nums" style="width:48px;color:var(--text-muted);font-size:12px;">0' +
+                    (idx + 1) +
+                    '</td><td>' +
+                    escapeHtml(b) +
+                    '</td></tr>'
+                  );
+                })
+                .join('') +
+              '</tbody></table></div></div>';
+          } else {
+            copyBodyHtml =
+              '<div style="display:flex;justify-content:flex-end;margin-top:14px;">' +
+              '<button type="button" id="copy-shortform-btn" class="btn-copy">대본 전체 복사</button>' +
+              '</div>' +
+              '<div class="table-wrap" style="margin-top:8px;"><table>' +
+              '<thead><tr><th style="width:100px;">구간</th><th>화면 연출</th><th>내레이션 · 자막</th></tr></thead>' +
+              '<tbody>' +
+              r.adCopywriting.shortFormScript
+                .map(function (s) {
+                  return (
+                    '<tr>' +
+                    '<td class="font-mono tabular-nums" style="font-weight:600;color:var(--accent);white-space:nowrap;">' +
+                    escapeHtml(s.timeRange) +
+                    '</td>' +
+                    '<td style="color:var(--text-secondary);">' +
+                    escapeHtml(s.visualCue) +
+                    '</td>' +
+                    '<td style="font-weight:500;">' +
+                    escapeHtml(s.narration) +
+                    '</td>' +
+                    '</tr>'
+                  );
+                })
+                .join('') +
+              '</tbody></table></div>';
+          }
+
+          var tiersHtml = r.pricing.tiers
+            .map(function (t) {
+              var selected = Number(state.simPrice) === Number(t.priceKrw);
+              return (
+                '<tr class="tier-row' +
+                (selected ? ' selected' : '') +
+                '" data-tier-price="' +
+                t.priceKrw +
+                '">' +
+                '<td><div style="font-weight:600;">' +
+                escapeHtml(t.tierName) +
+                '</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' +
+                escapeHtml(t.targetSegment) +
+                '</div></td>' +
+                '<td><div style="font-size:12px;font-weight:600;color:var(--accent);">' +
+                escapeHtml(t.discountNote) +
+                '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">' +
+                escapeHtml(t.strategyNote) +
+                '</div></td>' +
+                '<td class="font-mono tabular-nums" style="text-align:right;font-weight:700;white-space:nowrap;">' +
+                formatKrw(t.priceKrw) +
+                '</td>' +
+                '</tr>'
+              );
+            })
+            .join('');
+
+          els.resultsPanel.innerHTML =
+            // Top Summary Strip
+            '<div class="card summary-strip">' +
+            '<div>' +
+            '<div class="meta-line">' +
+            '<span>' +
+            escapeHtml(r.productAnalysis.detectedCategory) +
+            '</span><span aria-hidden="true">·</span>' +
+            '<span>' +
+            escapeHtml(state.targetAudience) +
+            '</span><span aria-hidden="true">·</span>' +
+            '<span>' +
+            escapeHtml(state.mood) +
+            '</span>' +
+            '</div>' +
+            '<h2 class="section-title" style="font-size:20px;margin-top:4px;">' +
+            escapeHtml(state.productName || '신규 제품 런칭 전략 리포트') +
+            '</h2>' +
+            '</div>' +
+            '<button type="button" id="copy-full-report-btn" class="btn-secondary">전체 리포트 복사</button>' +
+            '</div>' +
+
+            // 01. Slogans
+            '<section id="slogan-section" class="card">' +
+            '<div class="section-header"><div>' +
+            '<span class="section-kicker">01. Brand Slogan & Positioning</span>' +
+            '<h2 class="section-title">브랜드 슬로건 & 핵심 소구점</h2>' +
+            '</div></div>' +
+            '<div class="main-slogan-box">' +
+            '<div>' +
+            '<span class="section-kicker" style="color:var(--accent);">대표 메인 슬로건</span>' +
+            '<p class="main-slogan-text">“' +
+            escapeHtml(r.slogans.mainSlogan) +
+            '”</p>' +
+            '<p style="margin:0;font-size:14px;color:var(--text-secondary);">' +
+            escapeHtml(r.slogans.subTagline) +
+            '</p>' +
+            '</div>' +
+            '<button type="button" id="copy-main-slogan-btn" class="btn-mini">복사</button>' +
+            '</div>' +
+            '<div class="two-col">' +
+            '<div><h3 style="margin:0;font-size:14px;font-weight:600;">핵심 가치 제안</h3>' +
+            '<p style="margin:8px 0 0;font-size:14px;color:var(--text-secondary);line-height:1.65;">' +
+            escapeHtml(r.productAnalysis.coreValueProposition) +
+            '</p></div>' +
+            '<div><h3 style="margin:0;font-size:14px;font-weight:600;">이미지 · 도면 분석 디자인 포인트</h3>' +
+            '<ul class="insight-list">' +
+            r.productAnalysis.visualInsights
+              .map(function (ins, i) {
+                return (
+                  '<li class="insight-item"><span class="font-mono tabular-nums" style="font-size:12px;color:var(--text-muted);margin-top:2px;">0' +
+                  (i + 1) +
+                  '</span><span>' +
+                  escapeHtml(ins) +
+                  '</span></li>'
+                );
+              })
+              .join('') +
+            '</ul></div>' +
+            '</div>' +
+            '<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-hairline);">' +
+            '<h3 style="margin:0;font-size:14px;font-weight:600;">톤별 슬로건 변주 4종</h3>' +
+            '<div class="variations-grid">' +
+            variationsHtml +
+            '</div></div></section>' +
+
+            // 02. Instagram Ad Studio
+            '<section id="instagram-section" class="card">' +
+            '<div class="section-header">' +
+            '<div><span class="section-kicker">02. Instagram Ad Studio</span><h2 class="section-title">인스타그램 광고 크리에이티브 & 카피</h2></div>' +
+            '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+            '<div class="segmented">' +
+            '<button type="button" id="ig-format-feed" class="seg-btn' +
+            (state.igFormat === 'feed' ? ' active' : '') +
+            '">피드 (4:5)</button>' +
+            '<button type="button" id="ig-format-story" class="seg-btn' +
+            (state.igFormat === 'story' ? ' active' : '') +
+            '">스토리 · 릴스 (9:16)</button>' +
+            '</div>' +
+            '<button type="button" id="export-ig-png-btn" class="btn-header">PNG 저장</button>' +
+            '</div></div>' +
+            '<div class="ig-studio-grid">' +
+            '<div class="ig-phone-wrap">' +
+            '<div class="ig-card-shell">' +
+            (state.igFormat === 'feed'
+              ? '<div class="ig-mock-header"><div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
+                '<div class="ig-avatar" style="background:' +
+                escapeHtml(accentHex) +
+                ';"></div>' +
+                '<div style="min-width:0;"><div style="font-size:12px;font-weight:600;" id="ig-mock-handle-top">' +
+                escapeHtml(state.igHandle) +
+                '</div><div style="font-size:11px;color:var(--text-muted);">Sponsored</div></div></div>' +
+                '<span style="font-size:12px;color:var(--text-muted);">···</span></div>'
+              : '') +
+            '<div id="ig-preview-canvas" class="ig-canvas-preview ' +
+            state.igFormat +
+            '" style="background:' +
+            escapeHtml(cardBg) +
+            ';color:' +
+            cardColor +
+            ';">' +
+            '<div style="font-size:11px;font-weight:500;opacity:0.75;" id="ig-mock-handle-inline">@' +
+            escapeHtml(state.igHandle) +
+            '</div>' +
+            '<div class="ig-image-frame">' +
+            (state.imagePreviewUrl
+              ? '<img src="' + escapeHtml(state.imagePreviewUrl) + '" alt="인스타 광고 이미지" />'
+              : '<span style="font-size:12px;opacity:0.6;padding:16px;text-align:center;">업로드한 제품 사진 또는 도면이 이곳에 배치됩니다</span>') +
+            '</div>' +
+            '<div>' +
+            '<p id="ig-mock-headline" style="margin:0;font-size:16px;font-weight:700;line-height:1.35;">' +
+            escapeHtml(state.igHeadline) +
+            '</p>' +
+            '<p id="ig-mock-subcopy" style="margin:4px 0 10px;font-size:12px;opacity:0.82;line-height:1.45;">' +
+            escapeHtml(state.igSubcopy) +
+            '</p>' +
+            '<span id="ig-mock-cta" class="ig-cta-badge" style="background:' +
+            escapeHtml(accentHex) +
+            ';">' +
+            escapeHtml(state.igCta) +
+            '</span>' +
+            '</div></div>' +
+            (state.igFormat === 'feed'
+              ? '<div class="ig-mock-footer"><p style="margin:0;font-size:12px;color:var(--text-secondary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><strong style="margin-right:6px;">' +
+                escapeHtml(state.igHandle) +
+                '</strong>' +
+                escapeHtml(ig.feedCaption) +
+                '</p></div>'
+              : '') +
+            '</div>' +
+            '<div style="display:flex;gap:6px;margin-top:14px;">' +
+            '<button type="button" class="preset-btn' +
+            (state.igTheme === 'light' ? ' active' : '') +
+            '" data-ig-theme="light">라이트 스튜디오</button>' +
+            '<button type="button" class="preset-btn' +
+            (state.igTheme === 'dark' ? ' active' : '') +
+            '" data-ig-theme="dark">다크 스튜디오</button>' +
+            '<button type="button" class="preset-btn' +
+            (state.igTheme === 'accent' ? ' active' : '') +
+            '" data-ig-theme="accent">브랜드 컬러</button>' +
+            '</div></div>' +
+            '<div style="display:flex;flex-direction:column;gap:18px;">' +
+            '<div class="edit-grid">' +
+            '<div><label class="field-optional" for="ig-edit-headline">이미지 헤드라인 (실시간 편집)</label><input id="ig-edit-headline" class="input" style="margin-top:4px;" value="' +
+            escapeHtml(state.igHeadline) +
+            '" /></div>' +
+            '<div><label class="field-optional" for="ig-edit-handle">인스타그램 계정명</label><input id="ig-edit-handle" class="input" style="margin-top:4px;" value="' +
+            escapeHtml(state.igHandle) +
+            '" /></div>' +
+            '<div><label class="field-optional" for="ig-edit-subcopy">이미지 서브 카피</label><input id="ig-edit-subcopy" class="input" style="margin-top:4px;" value="' +
+            escapeHtml(state.igSubcopy) +
+            '" /></div>' +
+            '<div><label class="field-optional" for="ig-edit-cta">광고 버튼 문구 (CTA)</label><input id="ig-edit-cta" class="input" style="margin-top:4px;" value="' +
+            escapeHtml(state.igCta) +
+            '" /></div>' +
+            '</div>' +
+            '<div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<h3 style="margin:0;font-size:14px;font-weight:600;">인스타그램 피드 광고 본문</h3>' +
+            '<button type="button" id="copy-ig-caption-btn" class="btn-copy">본문+해시태그 복사</button>' +
+            '</div>' +
+            '<p class="ig-caption-box">' +
+            escapeHtml(ig.feedCaption) +
+            '</p>' +
+            '</div>' +
+            '<div class="variations-grid">' +
+            '<div class="sub-card"><div><div style="display:flex;justify-content:space-between;"><strong style="font-size:12px;">스토리 · 릴스 2줄 후킹 문구</strong><button type="button" id="copy-ig-story-btn" class="btn-copy">복사</button></div>' +
+            '<p style="margin:8px 0 0;font-size:13px;color:var(--text-secondary);white-space:pre-line;line-height:1.55;">' +
+            escapeHtml(ig.storyHookText) +
+            '</p></div></div>' +
+            '<div class="sub-card"><div><div style="display:flex;justify-content:space-between;align-items:center;"><strong style="font-size:12px;">촬영 · 비주얼 아트 디렉션</strong><span class="font-mono" style="font-size:11px;color:var(--text-muted);">' +
+            escapeHtml(accentHex) +
+            '</span></div>' +
+            '<p style="margin:8px 0 0;font-size:12px;color:var(--text-secondary);line-height:1.6;">' +
+            escapeHtml(ig.artDirectionGuide) +
+            '</p></div></div>' +
+            '</div>' +
+            '<div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;font-weight:600;color:var(--text-secondary);">추천 타깃 해시태그</span><button type="button" id="copy-ig-tags-btn" class="btn-copy">해시태그만 복사</button></div>' +
+            '<p style="margin:6px 0 0;font-size:12px;color:var(--accent);line-height:1.6;">' +
+            escapeHtml(ig.hashtags.join(' ')) +
+            '</p></div>' +
+            '</div></div></section>' +
+
+            // 03. Multi-channel Copywriting
+            '<section id="copy-section" class="card">' +
+            '<div class="section-header">' +
+            '<div><span class="section-kicker">03. Multi-Channel Ad Copy</span><h2 class="section-title">매체별 광고 문구 & 상세페이지 카피</h2></div>' +
+            '<div class="segmented">' +
+            '<button type="button" class="seg-btn' +
+            (state.copyTab === 'performance' ? ' active' : '') +
+            '" data-copy-tab="performance">퍼포먼스 광고</button>' +
+            '<button type="button" class="seg-btn' +
+            (state.copyTab === 'detail' ? ' active' : '') +
+            '" data-copy-tab="detail">상세페이지 상단</button>' +
+            '<button type="button" class="seg-btn' +
+            (state.copyTab === 'shortform' ? ' active' : '') +
+            '" data-copy-tab="shortform">15초 숏폼 대본</button>' +
+            '</div></div>' +
+            copyBodyHtml +
+            '</section>' +
+
+            // 04. Pricing & Margin Simulator
+            '<section id="pricing-section" class="card">' +
+            '<div class="section-header">' +
+            '<div><span class="section-kicker">04. Pricing & Margin Strategy</span><h2 class="section-title">가격 추천 및 수익성 시뮬레이터</h2></div>' +
+            '<div style="font-size:12px;color:var(--text-muted);">포지셔닝: <strong style="color:var(--text-primary);">' +
+            escapeHtml(r.pricing.positioningLabel) +
+            '</strong></div></div>' +
+            '<div class="pricing-top-grid">' +
+            '<div>' +
+            '<span class="field-optional">AI 권장 소비자가</span>' +
+            '<p class="price-big font-mono tabular-nums">' +
+            formatKrw(r.pricing.recommendedPriceKrw) +
+            '</p>' +
+            '<p class="font-mono tabular-nums" style="margin:4px 0 0;font-size:12px;color:var(--text-muted);">적정 범위 ' +
+            formatKrw(r.pricing.priceRangeMinKrw) +
+            ' ~ ' +
+            formatKrw(r.pricing.priceRangeMaxKrw) +
+            '</p>' +
+            '<div class="range-track"><div class="range-fill"></div><div class="range-marker" style="left:' +
+            recPct +
+            '%;"></div></div>' +
+            '<div class="font-mono tabular-nums" style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);">' +
+            '<span>최소 ' +
+            formatKrw(minP) +
+            '</span><span>최대 ' +
+            formatKrw(maxP) +
+            '</span></div>' +
+            '<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-hairline);">' +
+            '<p style="margin:0;font-size:13px;color:var(--text-secondary);line-height:1.65;">' +
+            escapeHtml(r.pricing.pricingRationale) +
+            '</p>' +
+            '<p style="margin:8px 0 0;font-size:12px;color:var(--text-muted);line-height:1.6;">프라이싱 팁: ' +
+            escapeHtml(r.pricing.psychologicalTip) +
+            '</p>' +
+            '</div></div>' +
+            '<div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<h3 style="margin:0;font-size:14px;font-weight:600;">3단계 런칭 가격 전략</h3>' +
+            '<span class="field-optional">행 클릭 시 아래 시뮬레이터 반영</span></div>' +
+            '<div class="table-wrap"><table><thead><tr><th>단계 · 타깃</th><th>혜택 · 전략</th><th style="text-align:right;">추천가</th></tr></thead><tbody>' +
+            tiersHtml +
+            '</tbody></table></div></div></div>' +
+            '<div style="margin-top:28px;padding-top:22px;border-top:1px solid var(--border-hairline);">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">' +
+            '<h3 style="margin:0;font-size:14px;font-weight:600;">원가 · 마진 시뮬레이터</h3>' +
+            '<span id="sim-applied-label" class="font-mono tabular-nums" style="font-size:12px;color:var(--text-muted);">적용 판매가: ' +
+            formatKrw(state.simPrice) +
+            '</span></div>' +
+            '<div class="sim-grid">' +
+            '<div><label class="field-optional" for="sim-price-input">판매가 설정 (원)</label><input id="sim-price-input" type="number" step="500" class="input font-mono tabular-nums" style="margin-top:4px;background:#f8fafc;" value="' +
+            state.simPrice +
+            '" /></div>' +
+            '<div><label class="field-optional" for="sim-cost-input">개당 제조·포장 원가 (원)</label><input id="sim-cost-input" type="number" step="500" class="input font-mono tabular-nums" style="margin-top:4px;background:#f8fafc;" value="' +
+            state.simCost +
+            '" /></div>' +
+            '<div><label class="field-optional" for="sim-fee-input">플랫폼·PG 수수료 (%)</label><input id="sim-fee-input" type="number" min="0" max="60" class="input font-mono tabular-nums" style="margin-top:4px;background:#f8fafc;" value="' +
+            state.simFee +
+            '" /></div>' +
+            '<div><label class="field-optional" for="sim-fixed-input">초기 금형·광고비 (원)</label><input id="sim-fixed-input" type="number" step="100000" class="input font-mono tabular-nums" style="margin-top:4px;background:#f8fafc;" value="' +
+            state.simFixed +
+            '" /></div>' +
+            '</div>' +
+            '<div class="kpi-grid">' +
+            '<div class="kpi-box"><span class="field-optional">개당 순수익 (수수료 차감)</span><p id="kpi-net-unit" class="kpi-value font-mono tabular-nums" style="color:' +
+            (netUnit >= 0 ? 'var(--text-primary)' : 'var(--danger)') +
+            ';">' +
+            formatKrw(netUnit) +
+            '</p></div>' +
+            '<div class="kpi-box"><span class="field-optional">순 마진율</span><p id="kpi-net-margin" class="kpi-value font-mono tabular-nums" style="color:' +
+            (netMargin >= 30 ? 'var(--success)' : netMargin >= 15 ? 'var(--warning)' : 'var(--danger)') +
+            ';">' +
+            netMargin +
+            '%</p></div>' +
+            '<div class="kpi-box"><span class="field-optional">손익분기 판매량 (BEP)</span><p id="kpi-bep" class="kpi-value font-mono tabular-nums">' +
+            (bepUnits !== null ? bepUnits.toLocaleString('ko-KR') + '개' : '적자 구조') +
+            '</p></div>' +
+            '</div></div></section>';
+
+          bindResultInteractions();
+        }
+
+        function updateSimulatorKpis() {
+          var feeAmt = Math.round((state.simPrice * state.simFee) / 100);
+          var netUnit = state.simPrice - state.simCost - feeAmt;
+          var netMargin =
+            state.simPrice > 0 ? Math.round((netUnit / state.simPrice) * 1000) / 10 : 0;
+          var bepUnits = netUnit > 0 ? Math.ceil(state.simFixed / netUnit) : null;
+
+          var lbl = document.getElementById('sim-applied-label');
+          var elUnit = document.getElementById('kpi-net-unit');
+          var elMargin = document.getElementById('kpi-net-margin');
+          var elBep = document.getElementById('kpi-bep');
+
+          if (lbl) lbl.textContent = '적용 판매가: ' + formatKrw(state.simPrice);
+          if (elUnit) {
+            elUnit.textContent = formatKrw(netUnit);
+            elUnit.style.color = netUnit >= 0 ? 'var(--text-primary)' : 'var(--danger)';
+          }
+          if (elMargin) {
+            elMargin.textContent = netMargin + '%';
+            elMargin.style.color =
+              netMargin >= 30 ? 'var(--success)' : netMargin >= 15 ? 'var(--warning)' : 'var(--danger)';
+          }
+          if (elBep) {
+            elBep.textContent = bepUnits !== null ? bepUnits.toLocaleString('ko-KR') + '개' : '적자 구조';
+          }
+        }
+
+        function bindResultInteractions() {
+          var r = state.result;
+          if (!r) return;
+
+          var fullBtn = document.getElementById('copy-full-report-btn');
+          if (fullBtn) {
+            fullBtn.onclick = function () {
+              var report = [
+                '# ' + (state.productName || r.productAnalysis.detectedCategory) + ' 런칭 전략 리포트',
+                '- 카테고리: ' + r.productAnalysis.detectedCategory,
+                '- 타깃층: ' + state.targetAudience,
+                '- 분위기: ' + state.mood,
+                '',
+                '## 01. 슬로건',
+                '- 메인 슬로건: ' + r.slogans.mainSlogan,
+                '- 서브 태그라인: ' + r.slogans.subTagline,
+                r.slogans.variations
+                  .map(function (v) {
+                    return '- [' + v.toneLabel + '] ' + v.slogan + ' (' + v.usageTip + ')';
+                  })
+                  .join('\n'),
+                '',
+                '## 02. 인스타그램 광고',
+                '- 헤드라인: ' + state.igHeadline,
+                '- 서브카피: ' + state.igSubcopy,
+                '- 본문:\n' + r.instagramAd.feedCaption,
+                '- 해시태그: ' + r.instagramAd.hashtags.join(' '),
+                '',
+                '## 03. 매체별 광고 문구',
+                r.adCopywriting.performanceAds
+                  .map(function (a) {
+                    return '- [' + a.channel + '] ' + a.headline + ' / ' + a.body;
+                  })
+                  .join('\n'),
+                '',
+                '## 04. 가격 추천',
+                '- 권장 소비자가: ' + formatKrw(r.pricing.recommendedPriceKrw),
+                '- 근거: ' + r.pricing.pricingRationale,
+              ].join('\n');
+              copyTextWithFeedback(fullBtn, report);
+            };
+          }
+
+          var mainSloganBtn = document.getElementById('copy-main-slogan-btn');
+          if (mainSloganBtn) {
+            mainSloganBtn.onclick = function () {
+              copyTextWithFeedback(mainSloganBtn, r.slogans.mainSlogan + '\n' + r.slogans.subTagline);
+            };
+          }
+
+          document.querySelectorAll('[data-copy-var]').forEach(function (btn) {
+            btn.onclick = function () {
+              var idx = Number(btn.getAttribute('data-copy-var'));
+              copyTextWithFeedback(btn, r.slogans.variations[idx].slogan);
+            };
+          });
+
+          document.querySelectorAll('[data-copy-perf]').forEach(function (btn) {
+            btn.onclick = function () {
+              var idx = Number(btn.getAttribute('data-copy-perf'));
+              var ad = r.adCopywriting.performanceAds[idx];
+              copyTextWithFeedback(btn, ad.headline + '\n' + ad.body);
+            };
+          });
+
+          var detailCopyBtn = document.getElementById('copy-detail-btn');
+          if (detailCopyBtn) {
+            detailCopyBtn.onclick = function () {
+              copyTextWithFeedback(
+                detailCopyBtn,
+                [
+                  r.adCopywriting.detailPageHero.problemStatement,
+                  r.adCopywriting.detailPageHero.solutionStatement,
+                ]
+                  .concat(r.adCopywriting.detailPageHero.keyBullets)
+                  .join('\n\n')
+              );
+            };
+          }
+
+          var shortCopyBtn = document.getElementById('copy-shortform-btn');
+          if (shortCopyBtn) {
+            shortCopyBtn.onclick = function () {
+              copyTextWithFeedback(
+                shortCopyBtn,
+                r.adCopywriting.shortFormScript
+                  .map(function (s) {
+                    return '[' + s.timeRange + '] 화면: ' + s.visualCue + ' / 멘트: ' + s.narration;
+                  })
+                  .join('\n')
+              );
+            };
+          }
+
+          var igFeedBtn = document.getElementById('ig-format-feed');
+          var igStoryBtn = document.getElementById('ig-format-story');
+          if (igFeedBtn) {
+            igFeedBtn.onclick = function () {
+              state.igFormat = 'feed';
+              renderResults();
+            };
+          }
+          if (igStoryBtn) {
+            igStoryBtn.onclick = function () {
+              state.igFormat = 'story';
+              renderResults();
+            };
+          }
+
+          document.querySelectorAll('[data-ig-theme]').forEach(function (btn) {
+            btn.onclick = function () {
+              state.igTheme = btn.getAttribute('data-ig-theme');
+              renderResults();
+            };
+          });
+
+          var exportBtn = document.getElementById('export-ig-png-btn');
+          if (exportBtn) {
+            exportBtn.onclick = exportInstagramPng;
+          }
+
+          var editHeadline = document.getElementById('ig-edit-headline');
+          var editHandle = document.getElementById('ig-edit-handle');
+          var editSubcopy = document.getElementById('ig-edit-subcopy');
+          var editCta = document.getElementById('ig-edit-cta');
+
+          if (editHeadline) {
+            editHeadline.oninput = function (e) {
+              state.igHeadline = e.target.value;
+              var el = document.getElementById('ig-mock-headline');
+              if (el) el.textContent = state.igHeadline;
+            };
+          }
+          if (editHandle) {
+            editHandle.oninput = function (e) {
+              state.igHandle = e.target.value;
+              var el1 = document.getElementById('ig-mock-handle-top');
+              var el2 = document.getElementById('ig-mock-handle-inline');
+              if (el1) el1.textContent = state.igHandle;
+              if (el2) el2.textContent = '@' + state.igHandle;
+            };
+          }
+          if (editSubcopy) {
+            editSubcopy.oninput = function (e) {
+              state.igSubcopy = e.target.value;
+              var el = document.getElementById('ig-mock-subcopy');
+              if (el) el.textContent = state.igSubcopy;
+            };
+          }
+          if (editCta) {
+            editCta.oninput = function (e) {
+              state.igCta = e.target.value;
+              var el = document.getElementById('ig-mock-cta');
+              if (el) el.textContent = state.igCta;
+            };
+          }
+
+          var capBtn = document.getElementById('copy-ig-caption-btn');
+          if (capBtn) {
+            capBtn.onclick = function () {
+              copyTextWithFeedback(
+                capBtn,
+                r.instagramAd.feedCaption + '\n\n' + r.instagramAd.hashtags.join(' ')
+              );
+            };
+          }
+          var storyBtn = document.getElementById('copy-ig-story-btn');
+          if (storyBtn) {
+            storyBtn.onclick = function () {
+              copyTextWithFeedback(storyBtn, r.instagramAd.storyHookText);
+            };
+          }
+          var tagsBtn = document.getElementById('copy-ig-tags-btn');
+          if (tagsBtn) {
+            tagsBtn.onclick = function () {
+              copyTextWithFeedback(tagsBtn, r.instagramAd.hashtags.join(' '));
+            };
+          }
+
+          document.querySelectorAll('[data-copy-tab]').forEach(function (btn) {
+            btn.onclick = function () {
+              state.copyTab = btn.getAttribute('data-copy-tab');
+              renderResults();
+            };
+          });
+
+          document.querySelectorAll('[data-tier-price]').forEach(function (row) {
+            row.onclick = function () {
+              state.simPrice = Number(row.getAttribute('data-tier-price'));
+              renderResults();
+            };
+          });
+
+          var simPriceInput = document.getElementById('sim-price-input');
+          var simCostInput = document.getElementById('sim-cost-input');
+          var simFeeInput = document.getElementById('sim-fee-input');
+          var simFixedInput = document.getElementById('sim-fixed-input');
+
+          if (simPriceInput) {
+            simPriceInput.oninput = function (e) {
+              state.simPrice = Math.max(0, Number(e.target.value));
+              updateSimulatorKpis();
+            };
+          }
+          if (simCostInput) {
+            simCostInput.oninput = function (e) {
+              state.simCost = Math.max(0, Number(e.target.value));
+              updateSimulatorKpis();
+            };
+          }
+          if (simFeeInput) {
+            simFeeInput.oninput = function (e) {
+              state.simFee = Math.min(60, Math.max(0, Number(e.target.value)));
+              updateSimulatorKpis();
+            };
+          }
+          if (simFixedInput) {
+            simFixedInput.oninput = function (e) {
+              state.simFixed = Math.max(0, Number(e.target.value));
+              updateSimulatorKpis();
+            };
+          }
+        }
+
+        function renderHistoryDrawer() {
+          if (state.savedRecords.length === 0) {
+            els.historyList.innerHTML =
+              '<div style="padding:48px 16px;text-align:center;">' +
+              '<p style="margin:0;font-size:14px;font-weight:600;">아직 저장된 전략이 없습니다.</p>' +
+              '<p style="margin:6px 0 0;font-size:12px;color:var(--text-muted);">제품 브리프를 입력해 전략을 생성하면 이곳에 자동 보관됩니다.</p>' +
+              '</div>';
+            return;
+          }
+
+          els.historyList.innerHTML = state.savedRecords
+            .map(function (item) {
+              var dateStr = new Date(item.createdAt).toLocaleDateString('ko-KR', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+              return (
+                '<div class="sub-card" style="flex-direction:row;align-items:flex-start;justify-content:space-between;">' +
+                '<button type="button" data-select-history="' +
+                escapeHtml(item.id) +
+                '" style="flex:1;text-align:left;background:none;border:none;padding:0;cursor:pointer;">' +
+                '<div class="meta-line"><span>' +
+                escapeHtml(item.result.productAnalysis.detectedCategory) +
+                '</span><span>·</span><span class="tabular-nums">' +
+                escapeHtml(dateStr) +
+                '</span></div>' +
+                '<div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-top:4px;">' +
+                escapeHtml(item.brief.productName || '이름 없는 제품') +
+                '</div>' +
+                '<div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">' +
+                escapeHtml(item.result.slogans.mainSlogan) +
+                '</div>' +
+                '<div class="meta-line tabular-nums" style="margin-top:8px;"><span>권장가 ' +
+                formatKrw(item.result.pricing.recommendedPriceKrw) +
+                '</span><span>·</span><span>' +
+                escapeHtml(item.brief.mood) +
+                '</span></div>' +
+                '</button>' +
+                '<button type="button" class="btn-mini" data-delete-history="' +
+                escapeHtml(item.id) +
+                '">삭제</button>' +
+                '</div>'
+              );
+            })
+            .join('');
+
+          document.querySelectorAll('[data-select-history]').forEach(function (btn) {
+            btn.onclick = function () {
+              var id = btn.getAttribute('data-select-history');
+              var found = state.savedRecords.find(function (rec) {
+                return rec.id === id;
+              });
+              if (found) {
+                state.productName = found.brief.productName || '';
+                state.imageKind = found.brief.imageKind || 'photo';
+                state.imagePreviewUrl = null;
+                state.imageBase64 = null;
+                state.imageMimeType = null;
+                state.description = found.brief.description || '';
+                state.targetAudience = found.brief.targetAudience || '';
+                state.mood = found.brief.mood || '';
+                state.estimatedCostKrw = found.brief.estimatedCostKrw || '';
+                syncFormFromState();
+                applyStrategyResult(found.result, false);
+                els.historyDrawer.classList.add('hidden');
+              }
+            };
+          });
+
+          document.querySelectorAll('[data-delete-history]').forEach(function (btn) {
+            btn.onclick = function () {
+              var id = btn.getAttribute('data-delete-history');
+              state.savedRecords = state.savedRecords.filter(function (rec) {
+                return rec.id !== id;
+              });
+              persistSavedRecords();
+              renderHistoryDrawer();
+            };
+          });
+        }
+
+        /* Global Event Wiring */
+        els.productName.oninput = function (e) {
+          state.productName = e.target.value;
+        };
+        els.description.oninput = function (e) {
+          state.description = e.target.value;
+          updateSubmitState();
+        };
+        els.targetAudience.oninput = function (e) {
+          state.targetAudience = e.target.value;
+          renderPresetButtons();
+          updateSubmitState();
+        };
+        els.mood.oninput = function (e) {
+          state.mood = e.target.value;
+          renderPresetButtons();
+          updateSubmitState();
+        };
+        els.estimatedCost.oninput = function (e) {
+          state.estimatedCostKrw = e.target.value;
+        };
+
+        els.targetPresets.onclick = function (e) {
+          var btn = e.target.closest('[data-preset-target]');
+          if (!btn) return;
+          var val = btn.getAttribute('data-preset-target');
+          state.targetAudience = state.targetAudience.indexOf(val) !== -1 ? '' : val;
+          syncFormFromState();
+        };
+
+        els.moodPresets.onclick = function (e) {
+          var btn = e.target.closest('[data-preset-mood]');
+          if (!btn) return;
+          var val = btn.getAttribute('data-preset-mood');
+          state.mood = state.mood.indexOf(val) !== -1 ? '' : val;
+          syncFormFromState();
+        };
+
+        els.kindPhotoBtn.onclick = function () {
+          state.imageKind = 'photo';
+          syncFormFromState();
+        };
+        els.kindBlueprintBtn.onclick = function () {
+          state.imageKind = 'blueprint';
+          syncFormFromState();
+        };
+
+        els.dropzone.onclick = function () {
+          els.fileInput.click();
+        };
+        els.dropzone.onkeydown = function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            els.fileInput.click();
+          }
+        };
+        els.dropzone.ondragover = function (e) {
+          e.preventDefault();
+          els.dropzone.classList.add('dragging');
+        };
+        els.dropzone.ondragleave = function () {
+          els.dropzone.classList.remove('dragging');
+        };
+        els.dropzone.ondrop = function (e) {
+          e.preventDefault();
+          els.dropzone.classList.remove('dragging');
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processFile(e.dataTransfer.files[0]);
+          }
+        };
+        els.fileInput.onchange = function (e) {
+          if (e.target.files && e.target.files[0]) {
+            processFile(e.target.files[0]);
+          }
+          e.target.value = '';
+        };
+        els.replaceImgBtn.onclick = function () {
+          els.fileInput.click();
+        };
+        els.removeImgBtn.onclick = function () {
+          state.imagePreviewUrl = null;
+          state.imageBase64 = null;
+          state.imageMimeType = null;
+          syncFormFromState();
+        };
+
+        document.addEventListener('paste', function (e) {
+          var items = e.clipboardData && e.clipboardData.items;
+          if (!items) return;
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image/') === 0) {
+              var file = items[i].getAsFile();
+              if (file) {
+                processFile(file);
+                break;
+              }
+            }
+          }
+        });
+
+        els.sampleBlueprintBtn.onclick = function () {
+          var dataUrl = createSampleBlueprintDataUrl();
+          state.productName = '모듈형 월넛 데스크 시스템 DO-01';
+          state.imageKind = 'blueprint';
+          state.imagePreviewUrl = dataUrl;
+          state.imageBase64 = dataUrl.split(',')[1];
+          state.imageMimeType = 'image/png';
+          state.description =
+            '북미산 월넛 원목과 아노다이징 브러시드 알루미늄을 결합한 320x140mm 크기의 모듈형 책상 정리 트레이. 자석 결합식 펜 컵, 스마트폰 거치 홈, 명함·메모지 수납 트레이를 책상 배치에 맞게 자유롭게 재구성할 수 있습니다.';
+          state.targetAudience = '3040 직장인 · 홈오피스, 데스크테리어에 투자하는 디자이너·개발자';
+          state.mood = '하이엔드 · 건축적, 절제되고 정갈한 스튜디오 무드';
+          state.estimatedCostKrw = '24000';
+          syncFormFromState();
+        };
+
+        els.samplePhotoBtn.onclick = function () {
+          var dataUrl = createSampleProductDataUrl();
+          state.productName = '릿지 매트 차콜 드리퍼 02';
+          state.imageKind = 'photo';
+          state.imagePreviewUrl = dataUrl;
+          state.imageBase64 = dataUrl.split(',')[1];
+          state.imageMimeType = 'image/png';
+          state.description =
+            '1,250도 고온 소성 무광 차콜 세라믹으로 제작한 핸드드립 커피 드리퍼. 내부의 24개 입체 리브(골)가 물줄기 속도를 균일하게 유지해 초보자도 클린컵 추출이 가능하며, 보온력이 뛰어나고 식기세척기 사용이 가능합니다.';
+          state.targetAudience = '홈카페를 즐기는 2030 직장인, 스페셜티 커피 입문자 및 애호가';
+          state.mood = '따뜻한 내추럴 감성, 차분한 아침 리추얼 무드';
+          state.estimatedCostKrw = '11500';
+          syncFormFromState();
+        };
+
+        els.submitBtn.onclick = runAnalysis;
+        els.retryBtn.onclick = runAnalysis;
+
+        els.openHistoryBtn.onclick = function () {
+          renderHistoryDrawer();
+          els.historyDrawer.classList.remove('hidden');
+        };
+        els.closeHistoryBtn.onclick = function () {
+          els.historyDrawer.classList.add('hidden');
+        };
+        els.historyDrawer.onclick = function (e) {
+          if (e.target === els.historyDrawer) {
+            els.historyDrawer.classList.add('hidden');
+          }
+        };
+
+        els.brandResetLink.onclick = function (e) {
+          e.preventDefault();
+          state.productName = '';
+          state.imageKind = 'photo';
+          state.imagePreviewUrl = null;
+          state.imageBase64 = null;
+          state.imageMimeType = null;
+          state.description = '';
+          state.targetAudience = '';
+          state.mood = '';
+          state.estimatedCostKrw = '';
+          state.result = null;
+          els.errorBanner.classList.add('hidden');
+          els.resultsPanel.classList.add('hidden');
+          els.welcomePanel.classList.remove('hidden');
+          syncFormFromState();
+        };
+
+        document.querySelectorAll('[data-result-nav]').forEach(function (link) {
+          link.onclick = function (e) {
+            if (!state.result) {
+              e.preventDefault();
+              document.getElementById('brief-section').scrollIntoView({ behavior: 'smooth' });
+            }
+          };
+        });
+
+        els.downloadSelfHtmlBtn.onclick = function () {
+          var clone = document.documentElement.cloneNode(true);
+          var results = clone.querySelector('#results-panel');
+          var welcome = clone.querySelector('#welcome-panel');
+          var loading = clone.querySelector('#loading-panel');
+          var error = clone.querySelector('#error-banner');
+          if (results) {
+            results.innerHTML = '';
+            results.classList.add('hidden');
+          }
+          if (welcome) welcome.classList.remove('hidden');
+          if (loading) loading.classList.add('hidden');
+          if (error) error.classList.add('hidden');
+          var html = '<!doctype html>\n' + clone.outerHTML;
+          var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = 'index.html';
+          a.click();
+          setTimeout(function () {
+            URL.revokeObjectURL(url);
+          }, 1000);
+        };
+
+        syncFormFromState();
+        updateHistoryButtonLabel();
+      })();
+    </script>
+  </body>
+</html>
